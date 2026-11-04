@@ -1,10 +1,10 @@
 # Keputusan dan Pertanyaan Terbuka EISH
 
-> Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
+> Edisi desain dengan keputusan PO terbaru. Bagian yang sudah disahkan dicatat eksplisit; keputusan lain yang masih terbuka tidak dianggap disetujui.
 
-> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Status: Desain dan autentikasi disetujui PO pada 4 November 2026 untuk implementasi Sprint 0 saja; Sprint 1–4 dan produksi belum diotorisasi.
 > Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
-> Seluruh dokumentasi dan label UI memakai Bahasa Indonesia; data hanya sintetis. Tidak ada kode aplikasi atau deployment produksi pada tahap ini.
+> Seluruh dokumentasi dan label UI memakai Bahasa Indonesia; data hanya sintetis. Implementasi dibatasi Sprint 0, tanpa deployment produksi.
 
 ## Keputusan PO — 4 November 2026
 
@@ -12,9 +12,9 @@
 - **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
 - **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
 - **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
-- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+- **Login:** email atau username + password. Akun dibuat Admin, tanpa pendaftaran mandiri. Session habis setelah idle 30 menit atau maksimal 8 jam; akun nonaktif ditolak pada permintaan berikutnya. PO menyetujui usulan ini dan desain untuk Sprint 0 pada 4 November 2026. Pemulihan password serta SSO/pilot belum diputuskan (Q-05).
 
-Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
+Keputusan ini melengkapi analisis tanpa mengubah PRD. PO telah menyetujui desain dan autentikasi untuk Sprint 0 saja. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan; tidak ada izin implementasi Sprint 1–4 atau produksi.
 
 ## Format, kedalaman, dan kriteria keluaran
 
@@ -68,12 +68,12 @@ Kriteria kelengkapan: semua keputusan pada PRD §16 terwakili, termasuk sesi bri
 ### Q-05 — Login, session dan SSO
 
 - **Sumber:** §4,11,16; NFR-01; keputusan PO, 4 November 2026.
-- **Keputusan disahkan:** login memakai email atau username sebagai pengenal akun.
-- **Masih perlu keputusan:** bagaimana pembuktian identitas (misalnya password), siapa membuat akun dan proses pemulihannya, timeout idle/absolut, serta kebutuhan SSO pilot yang disetujui TI. Email/username saja belum menetapkan credential atau provider.
-- **Rekomendasi teknis:** email/username unik ternormalisasi tanpa benturan antar-akun; Auth.js kandidat, session dapat dicabut, cek akun aktif/peran pada setiap permintaan. Akun development hanya sintetis.
+- **Keputusan disahkan:** email atau username + password; akun dibuat Admin tanpa pendaftaran mandiri; session idle 30 menit, absolut 8 jam; akun nonaktif ditolak pada permintaan berikutnya. Desain disetujui untuk Sprint 0 pada 4 November 2026.
+- **Masih perlu keputusan:** proses pemulihan password, kewenangan provisioning role privileged (Q-02), dan kebutuhan SSO pilot yang disetujui TI. Ini tidak menghalangi fondasi login lokal yang sudah disetujui.
+- **Rekomendasi teknis:** email/username unik ternormalisasi tanpa benturan antar-akun; Auth.js adalah kandidat awal; implementasi session opaque dijelaskan di desain teknis, session dapat dicabut, cek akun aktif/peran pada setiap permintaan. Akun development hanya sintetis.
 - **Pemilik keputusan:** PO dan TI.
-- **Gerbang:** sebelum implementasi autentikasi Sprint 0; identitas pilot sebelum pilot.
-- **Status:** Pengenal login diputuskan; mekanisme verifikasi/session/provisioning masih terbuka.
+- **Gerbang:** fondasi autentikasi Sprint 0 sudah disetujui; pemulihan/identitas pilot sebelum fase penggunaannya.
+- **Status:** Autentikasi/password, provisioning oleh Admin dan durasi session diputuskan; pemulihan/SSO serta role privileged tersisa terbuka.
 
 ### Q-06 — Revisi briefing
 
@@ -187,16 +187,16 @@ Kriteria kelengkapan: semua keputusan pada PRD §16 terwakili, termasuk sesi bri
 
 Q-01 sudah selesai. Berikutnya tinjau desain dan selesaikan rincian tersisa Q-02–05 agar pondasi izin dan publikasi tidak perlu dibangun ulang. Putuskan Q-07 sebelum versi statement, Q-06/Q-11 sebelum briefing, dan kebijakan TI Q-12–14 sebelum fasilitas terkait atau pilot. Pertanyaan lainnya dapat diputuskan bersama backlog fase yang bergantung padanya.
 
-Pekerjaan tahap ini berhenti pada empat dokumen. Tidak ada keputusan yang dianggap disetujui karena tidak dijawab, dan persetujuan desain tidak berarti persetujuan deployment produksi.
+Tahap analisis selesai; PO mengizinkan implementasi Sprint 0 saja. Tidak ada keputusan yang dianggap disetujui karena tidak dijawab, dan persetujuan desain tidak berarti persetujuan deployment produksi.
 
 ## Ringkasan keputusan yang perlu dijawab terlebih dahulu
 
 | Urutan | ID | Jawaban minimum yang diperlukan | Dampak bila belum dijawab |
 |---|---|---|---|
 | Selesai | Q-01 | Markdown resmi sudah dibaca dan kesetaraan 345 blok teks diverifikasi | Tidak lagi menghalangi desain |
-| 2 | Persetujuan desain | Setuju / revisi beserta bagian yang perlu diubah | Seluruh penulisan kode aplikasi tetap ditunda |
+| Selesai | Persetujuan desain | PO menyetujui desain dan autentikasi untuk Sprint 0 | Sprint 0 diizinkan; Sprint 1–4/produksi tidak otomatis diizinkan |
 | 3 | Q-02, Q-03 | Katim, satu tingkat dan persetujuan karya sendiri sudah ditetapkan; lengkapi pemberian role dan mandat transisi | Hanya rincian izin/transisi tersisa yang belum final |
 | 4 | Q-04 | Reader final-only sudah ditetapkan; lengkapi pelaku publikasi kolom isu dan aturan penarikan | Hanya rincian publikasi/penarikan yang belum final |
-| 5 | Q-05 | Pengenal email/username sudah ditetapkan; putuskan mekanisme verifikasi, provisioning dan masa session | Fondasi identitas belum dapat diimplementasikan lengkap |
+| Diputuskan untuk Sprint 0 | Q-05 | Email/username + password, akun dibuat Admin, idle 30 menit dan absolut 8 jam | Pemulihan/SSO masih terbuka, bukan syarat tambahan fondasi lokal |
 
 Persetujuan teknis tidak menggantikan keputusan substantif PO atau persetujuan infrastruktur/keamanan TI. Jika sebagian desain disetujui, catat batas bagian yang disetujui; jangan menafsirkan itu sebagai izin membangun semua sprint.

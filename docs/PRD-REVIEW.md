@@ -1,10 +1,10 @@
 # Tinjauan PRD EISH v1.0
 
-> Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
+> Edisi desain dengan keputusan PO terbaru. Bagian yang sudah disahkan dicatat eksplisit; keputusan lain yang masih terbuka tidak dianggap disetujui.
 
-> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Status: Desain dan autentikasi disetujui PO pada 4 November 2026 untuk implementasi Sprint 0 saja; Sprint 1–4 dan produksi belum diotorisasi.
 > Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
-> Bahasa dokumentasi dan antarmuka: Bahasa Indonesia. Nama teknologi, identifier, dan kode status dapat tetap memakai istilah teknis; label pengguna diterjemahkan. Pengembangan hanya memakai data sintetis. Tidak ada implementasi atau penerapan produksi pada tahap ini.
+> Bahasa dokumentasi dan antarmuka: Bahasa Indonesia. Nama teknologi, identifier, dan kode status dapat tetap memakai istilah teknis; label pengguna diterjemahkan. Pengembangan hanya memakai data sintetis. Implementasi dibatasi Sprint 0, tanpa penerapan produksi.
 
 ## Keputusan PO — 4 November 2026
 
@@ -12,9 +12,9 @@
 - **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
 - **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
 - **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
-- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+- **Login:** email atau username + password. Akun dibuat Admin, tanpa pendaftaran mandiri. Session habis setelah idle 30 menit atau maksimal 8 jam; akun nonaktif ditolak pada permintaan berikutnya. PO menyetujui usulan ini dan desain untuk Sprint 0 pada 4 November 2026. Pemulihan password serta SSO/pilot belum diputuskan (Q-05).
 
-Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
+Keputusan ini melengkapi analisis tanpa mengubah PRD. PO telah menyetujui desain dan autentikasi untuk Sprint 0 saja. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan; tidak ada izin implementasi Sprint 1–4 atau produksi.
 
 ## Format, kedalaman, dan kriteria keluaran
 
@@ -94,7 +94,7 @@ PRD memadai untuk merancang monolit modular dan merencanakan Sprint 0. Aturan in
 
 MVP mencakup alur manual isu, briefing, statement, portal baca, pencarian, audit, ekspor dan pemulihan. Tidak mencakup crawling/scraping, API media sosial, sentimen, statistik volume, trend chart, alert algoritmik, AI/LLM/RAG, notifikasi WhatsApp, aplikasi native, kolaborasi real-time, microservices, vector database, Elasticsearch, atau SSO yang belum disetujui TI. Migrasi manual tidak berarti membuat integrasi Google Docs.
 
-PRD §17 memuat contoh prompt untuk implementasi Sprint 0; instruksi pengguna saat ini membatasi keluaran pada analisis dan empat dokumen. Karena itu belum ada scaffold, migrasi database, seed, UI, layanan, atau deployment yang dibuat. Semua pengujian dalam dokumen ini merupakan rencana, bukan hasil eksekusi aplikasi.
+PRD §17 memuat contoh prompt untuk implementasi Sprint 0; instruksi pengguna saat ini membatasi keluaran pada analisis dan empat dokumen. Pada fase analisis belum dibuat scaffold atau layanan. Setelah persetujuan PO, fondasi Sprint 0 diimplementasikan; hasil pengujiannya dicatat di [SPRINT-0.md](SPRINT-0.md), sedangkan matriks di dokumen ini tetap merupakan rencana penerimaan MVP. Tidak ada deployment produksi.
 
 ## Prioritas temuan untuk peninjauan
 

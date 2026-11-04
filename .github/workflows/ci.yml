@@ -1,0 +1,42 @@
+name: Pemeriksaan Sprint 0
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5
+        env:
+          POSTGRES_USER: eish
+          POSTGRES_PASSWORD: password-sintetis-ci
+          POSTGRES_DB: eish_test
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U eish -d eish_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://eish:password-sintetis-ci@localhost:5432/eish_test?schema=public
+      APP_URL: http://localhost:3000
+      AUTH_SECRET: nilai-sintetis-ci-bukan-rahasia-produksi-123456
+      SEED_PASSWORD: password-sintetis-ci-123
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run db:migrate
+      - run: npm run db:seed
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

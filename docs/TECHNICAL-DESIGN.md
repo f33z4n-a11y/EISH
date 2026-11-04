@@ -1,10 +1,10 @@
 # Usulan Desain Teknis EISH
 
-> Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
+> Edisi desain dengan keputusan PO terbaru. Bagian yang sudah disahkan dicatat eksplisit; keputusan lain yang masih terbuka tidak dianggap disetujui.
 
-> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Status: Desain dan autentikasi disetujui PO pada 4 November 2026 untuk implementasi Sprint 0 saja; Sprint 1–4 dan produksi belum diotorisasi.
 > Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
-> Bahasa dokumentasi dan antarmuka: Bahasa Indonesia. Nama teknologi, identifier, dan kode status dapat tetap memakai istilah teknis; label pengguna diterjemahkan. Pengembangan hanya memakai data sintetis. Tidak ada implementasi atau penerapan produksi pada tahap ini.
+> Bahasa dokumentasi dan antarmuka: Bahasa Indonesia. Nama teknologi, identifier, dan kode status dapat tetap memakai istilah teknis; label pengguna diterjemahkan. Pengembangan hanya memakai data sintetis. Implementasi dibatasi Sprint 0, tanpa penerapan produksi.
 
 ## Keputusan PO — 4 November 2026
 
@@ -12,9 +12,9 @@
 - **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
 - **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
 - **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
-- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+- **Login:** email atau username + password. Akun dibuat Admin, tanpa pendaftaran mandiri. Session habis setelah idle 30 menit atau maksimal 8 jam; akun nonaktif ditolak pada permintaan berikutnya. PO menyetujui usulan ini dan desain untuk Sprint 0 pada 4 November 2026. Pemulihan password serta SSO/pilot belum diputuskan (Q-05).
 
-Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
+Keputusan ini melengkapi analisis tanpa mengubah PRD. PO telah menyetujui desain dan autentikasi untuk Sprint 0 saja. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan; tidak ada izin implementasi Sprint 1–4 atau produksi.
 
 ## Format, kedalaman, dan kriteria keluaran
 
@@ -61,7 +61,7 @@ Struktur usulan: rute Next.js sebagai adaptor tipis; modul domain berisi layanan
 | PostgreSQL | Cocok untuk relasi, transaksi, audit, JSONB snapshot dan full-text search | FTS Bahasa Indonesia perlu uji relevansi; mulai konfigurasi simple, jangan mengasumsikan stemming Indonesia tersedia. Indeks sesuai filter; migrasi dan backup wajib |
 | Prisma ORM | Model relasi bertipe, migrasi dan transaksi mudah dirawat | Constraint parsial, proteksi snapshot dan FTS dapat membutuhkan SQL migrasi terulas. Hindari pola read-then-write tanpa locking; jangan memakai SQLite sebagai pengganti uji integrasi PostgreSQL |
 | Tiptap | Rich text terstruktur dan extension terbatas cocok editor manual | Output tetap tidak terpercaya; sanitasi server. Tetapkan fitur format minimal dan versi schema JSON; pastikan extension/lisensi yang dipilih tersedia. Tidak mengaktifkan kolaborasi real-time |
-| Auth.js + RBAC | Kandidat pengelolaan session; aturan domain tetap milik aplikasi | Pengenal login email atau username sudah diputuskan PO; mekanisme verifikasi, masa sesi dan provisioning belum diputuskan. Auth.js bukan mesin RBAC. Rekomendasi session yang dapat dicabut dan cek akun aktif; jangan membuat akun bawaan untuk produksi |
+| Auth.js + RBAC | Kandidat pengelolaan session; aturan domain tetap milik aplikasi | Email/username + password, akun dibuat Admin, idle 30 menit dan absolut 8 jam sudah disetujui PO. Auth.js bukan mesin RBAC. Rekomendasi session yang dapat dicabut dan cek akun aktif; jangan membuat akun bawaan untuk produksi |
 | Docker | Lingkungan dev konsisten, dapat dipindah sesuai NFR-10 | Image/version dipin, proses non-root, health check, volume privat; migrasi dijalankan terkontrol. Container bukan backup atau pemisahan akses data secara otomatis |
 
 Tidak menetapkan nomor versi tanpa pemeriksaan kompatibilitas paket, runtime, lisensi dan dukungan keamanan saat Sprint 0. PostgreSQL lokal via Docker mengikuti asumsi §16; volume lampiran privat atau S3-compatible ditentukan TI, bukan integrasi wajib baru. Ekspor PDF direkomendasikan sesuai asumsi PRD, masih menunggu Q-11.
@@ -84,7 +84,7 @@ Semua akses: autentikasi → cek akun aktif/session → cek aksi/peran → cek p
 
 Tanda * menandai rincian Q-02–05 yang masih terbuka. Mandat Katim, satu tingkat dan izin persetujuan karya sendiri telah disahkan PO. Penulis dengan role Approver boleh menyetujui naskahnya sendiri; penulis tanpa role tersebut tetap ditolak. Reader hanya membaca informasi final, draft tetap tersembunyi sesuai keputusan PO; rincian penerbitan isu tetap dalam Q-04. Pemberian peran harus diaudit; otoritas admin memberi peran Approver perlu diputuskan. Pembacaan audit tidak memberi akses otomatis ke seluruh naskah sensitif.
 
-Session: cookie HttpOnly, SameSite dan Secure di HTTPS; proteksi CSRF/origin sesuai mekanisme framework; tidak menyimpan session di URL. Nonaktif akun/ubah peran berlaku pada permintaan terlindungi berikutnya melalui pemeriksaan server. Login dibatasi percobaan dan kesalahan tidak mengungkap keberadaan akun; pengenal email/username telah disetujui, sedangkan mekanisme verifikasi, durasi dan provider menunggu PO/TI. Semua rahasia lewat konfigurasi lingkungan aman, tidak dicatat di audit.
+Session: cookie HttpOnly, SameSite dan Secure di HTTPS; proteksi CSRF/origin sesuai mekanisme framework; tidak menyimpan session di URL. Nonaktif akun/ubah peran berlaku pada permintaan terlindungi berikutnya melalui pemeriksaan server. Login dibatasi percobaan dan kesalahan tidak mengungkap keberadaan akun; email/username + password, akun dibuat Admin, idle 30 menit dan absolut 8 jam telah disetujui. Semua rahasia lewat konfigurasi lingkungan aman, tidak dicatat di audit.
 
 ## Model data konseptual
 
@@ -94,7 +94,7 @@ Semua ID stabil dan tidak bergantung judul/slug. Waktu kejadian server memakai t
 |---|---|---|
 | User | id, nama, email, username, status, waktu dibuat/diubah | Email dan username unik ternormalisasi; cegah ambiguitas pengenal antar-akun; 1:N isu, update, revisi, approval dan audit; nonaktif tanpa menghapus jejak |
 | Role, UserRole | id/kode peran; user_id, role_id | User N:M Role; pasangan unik; Katim memakai role Approver, persetujuan satu tingkat; pemberian role menunggu rincian Q-02 |
-| Session (teknis) | id/token hash, user_id, expires_at | User 1:N Session; implementasi mengikuti provider yang disetujui |
+| Session (teknis) | id/token hash, user_id, expires_at | User 1:N Session; token opaque dihash, idle 30 menit/absolut 8 jam sesuai keputusan PO |
 | Category | id, nama, active | 1:N Issue; nonaktif tidak menghapus kategori historis |
 | Issue | id, slug, judul, kategori, owner_id, keywords, first_recorded_date, lifecycle_status, attention_flag, deleted_at, lock_version | Category/User 1:N Issue; Issue 1:N Update, Statement, Revision, Source; status perhatian terpisah; slug boleh berubah tetapi tautan ID tetap |
 | IssueRevision (usulan teknis Q-04) | issue_id, revision_no, judul/background/summary/label_snapshot, edited_by, edited_at, published_by/at | Issue 1:N; nomor unik per isu; pointer revisi kerja dan revisi terbit terpisah; perubahan internal tidak menimpa proyeksi Reader |
@@ -164,4 +164,12 @@ Risiko operasional satu aplikasi ditangani melalui pembatasan akses database/sto
 
 Pengujian positif wajib membuktikan Katim dengan role Approver dapat menyetujui karya sendiri untuk briefing maupun statement dalam satu tingkat; tetap ikuti submit/review/status sah, tidak melewati validasi versi dan transaksi. Pengujian negatif membuktikan penulis biasa serta Admin tanpa role Approver tidak dapat menyetujui. Simpan actor penulis dan approver meski ID sama; jangan menciptakan aktor kedua fiktif.
 
-Login diuji menggunakan email dan username menuju akun yang sama, termasuk normalisasi dan pencegahan benturan pengenal antar-akun, pesan gagal yang tidak membocorkan akun, serta penolakan akun nonaktif. Bentuk credential dan pemulihannya menunggu Q-05; username adalah pengenal, bukan bukti autentikasi dengan sendirinya.
+Login diuji menggunakan email dan username menuju akun yang sama, termasuk normalisasi dan pencegahan benturan pengenal antar-akun, pesan gagal yang tidak membocorkan akun, serta penolakan akun nonaktif. Credential password disetujui; alur pemulihan belum diputuskan dalam Q-05. Username adalah pengenal, bukan bukti autentikasi dengan sendirinya.
+
+## Keputusan implementasi fondasi autentikasi
+
+Auth.js pada evaluasi awal adalah kandidat, bukan persyaratan produk wajib. Sprint 0 menggunakan session opaque PostgreSQL yang kecil dan terpusat agar pencabutan akun, idle 30 menit dan batas absolut 8 jam ditegakkan langsung di server tanpa bergantung klaim JWT. Password memakai bcrypt cost 12, dibatasi 72 byte UTF-8 untuk mencegah pemotongan input; token session acak 256 bit dan hanya hash SHA-256 disimpan. Cookie HttpOnly/SameSite=Lax, Secure pada HTTPS. Endpoint mutasi memeriksa Origin terhadap APP_URL; limiter percobaan login tersimpan PostgreSQL. Seluruh aturan diakses melalui fungsi auth/kebijakan bersama; tidak ada OAuth/SSO atau pendaftaran mandiri.
+
+Prisma dipin ke 7.10.1 dengan adapter PostgreSQL setelah audit menemukan advisory pada dependensi Prisma 6. Semua timestamp server memakai timestamptz(3); migrasi tersimpan dan dapat diulang pada database baru. Image Node/PostgreSQL dipin digest. Pemilihan library tidak mengubah cakupan atau aturan persetujuan produk.
+
+Formulir Admin Sprint 0 hanya menyediakan akun Reader/Contributor/Editor. Katim/Approver dan Admin sintetis dibuat oleh seed lokal. Pengelolaan role, penonaktifan melalui UI, pemulihan password dan kebijakan provisioning privileged tetap memerlukan fase/keputusan terkait; tidak otomatis dianggap selesai karena fondasi session sudah ada.

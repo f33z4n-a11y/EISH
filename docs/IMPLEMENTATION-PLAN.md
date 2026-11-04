@@ -1,10 +1,10 @@
 # Rencana Implementasi Bertahap EISH
 
-> Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
+> Edisi desain dengan keputusan PO terbaru. Bagian yang sudah disahkan dicatat eksplisit; keputusan lain yang masih terbuka tidak dianggap disetujui.
 
-> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Status: Desain dan autentikasi disetujui PO pada 4 November 2026 untuk implementasi Sprint 0 saja; Sprint 1–4 dan produksi belum diotorisasi.
 > Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
-> Seluruh dokumentasi dan label UI memakai Bahasa Indonesia; data hanya sintetis. Tidak ada kode aplikasi atau deployment produksi pada tahap ini.
+> Seluruh dokumentasi dan label UI memakai Bahasa Indonesia; data hanya sintetis. Implementasi dibatasi Sprint 0, tanpa deployment produksi.
 
 ## Keputusan PO — 4 November 2026
 
@@ -12,15 +12,15 @@
 - **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
 - **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
 - **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
-- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+- **Login:** email atau username + password. Akun dibuat Admin, tanpa pendaftaran mandiri. Session habis setelah idle 30 menit atau maksimal 8 jam; akun nonaktif ditolak pada permintaan berikutnya. PO menyetujui usulan ini dan desain untuk Sprint 0 pada 4 November 2026. Pemulihan password serta SSO/pilot belum diputuskan (Q-05).
 
-Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
+Keputusan ini melengkapi analisis tanpa mengubah PRD. PO telah menyetujui desain dan autentikasi untuk Sprint 0 saja. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan; tidak ada izin implementasi Sprint 1–4 atau produksi.
 
 ## Format, kedalaman, dan kriteria keluaran
 
 Setiap fase memuat tujuan, dependensi keputusan, paket pekerjaan kecil, keluaran, kriteria penerimaan terukur dan strategi pengujian. Kedalaman sampai skenario positif/negatif, kasus konkurensi dan bukti gerbang kelulusan; bukan estimasi tanggal yang belum memiliki kapasitas tim.
 
-Kriteria keluaran: Sprint 0–4 selaras PRD §14; seluruh FR/NFR dan UAT-01–14 terpetakan; fitur P0 tidak ditunda tanpa persetujuan; pengujian dibedakan unit/integrasi/end-to-end/manual; setiap fase memiliki gerbang berhenti. Semua pemeriksaan berikut masih **direncanakan, belum dijalankan**.
+Kriteria keluaran: Sprint 0–4 selaras PRD §14; seluruh FR/NFR dan UAT-01–14 terpetakan; fitur P0 tidak ditunda tanpa persetujuan; pengujian dibedakan unit/integrasi/end-to-end/manual; setiap fase memiliki gerbang berhenti. Kriteria fase berikut tetap menjadi rencana; hasil implementasi dan pengujian Sprint 0 dicatat terpisah di [SPRINT-0.md](SPRINT-0.md).
 
 ## Standar keluaran rencana
 
@@ -37,19 +37,19 @@ Setiap paket pekerjaan harus cukup kecil untuk ditinjau sendiri dan merujuk kebu
 
 ## Gerbang sebelum implementasi
 
-Fase analisis saat ini menghasilkan empat dokumen saja. PO meninjau [desain teknis](TECHNICAL-DESIGN.md) dan [keputusan terbuka](OPEN-QUESTIONS.md). Tidak membuat scaffold, schema, migrasi, seed atau UI sebelum desain disetujui. Setelah disetujui, implementasikan satu sprint dan tinjau hasil sebelum memperluas cakupan. Perubahan kebijakan yang memengaruhi database atau izin harus diselesaikan sebelum bagian terkait dibangun.
+Fase analisis menghasilkan empat dokumen. PO telah menyetujui desain dan autentikasi untuk Sprint 0; fase berikut tetap memerlukan peninjauan. Referensi: [desain teknis](TECHNICAL-DESIGN.md) dan [keputusan terbuka](OPEN-QUESTIONS.md). Tidak membuat scaffold, schema, migrasi, seed atau UI sebelum desain disetujui. Setelah disetujui, implementasikan satu sprint dan tinjau hasil sebelum memperluas cakupan. Perubahan kebijakan yang memengaruhi database atau izin harus diselesaikan sebelum bagian terkait dibangun.
 
 ## Sprint 0 — Fondasi
 
 **Tujuan:** kerangka aplikasi lokal yang dapat dijalankan, identitas dan kebijakan dasar, tanpa membangun seluruh fitur domain. Sumber: §4,14; NFR-01,02,08,09,10,11.
 
-**Dependensi:** Verifikasi sumber Q-01 telah selesai. Katim/satu tingkat/izin persetujuan karya sendiri telah ditetapkan; rincian administrasi role Q-02/03, mekanisme verifikasi login/session Q-05, serta persetujuan desain tetap diperlukan. Q-17 menentukan target aksesibilitas; Q-04 menghalangi finalisasi schema publikasi di Sprint 1.
+**Dependensi:** Verifikasi sumber Q-01 telah selesai. Katim/satu tingkat/izin persetujuan karya sendiri telah ditetapkan; rincian administrasi role Q-02/03 tetap terbuka. Persetujuan desain dan autentikasi Q-05 untuk Sprint 0 telah diberikan; pemulihan dan SSO tetap terbuka. Q-17 menentukan target aksesibilitas; Q-04 menghalangi finalisasi schema publikasi di Sprint 1.
 
 **Paket pekerjaan:**
 
 1. S0.1: README/AGENTS, pin runtime/paket, lockfile, konfigurasi contoh tanpa secret, lint/typecheck/test dan CI.
 2. S0.2: Docker dev, PostgreSQL lokal, migrasi awal identitas/peran dan seed sintetis; dokumentasikan instalasi dan reset khusus data dummy.
-3. S0.3: login dengan pengenal email atau username (mekanisme verifikasi masih Q-05), session dapat dicabut, cek akun aktif, kebijakan akses server dan matriks izin.
+3. S0.3: login dengan pengenal email atau username + password, akun dibuat Admin, session idle 30 menit/absolut 8 jam, session dapat dicabut, cek akun aktif, kebijakan akses server dan matriks izin.
 4. S0.4: kerangka navigasi Bahasa Indonesia untuk operasional/Reader, keadaan kosong, error dan komponen aksesibel; belum membuat fitur penuh.
 
 **Kriteria penerimaan:** checkout bersih dapat dipasang dari lockfile dan menjalankan aplikasi serta database mengikuti README; migrasi di database kosong sukses; seed dapat diulang tanpa menggandakan akun; lima peran sintetis dapat diuji; anonim dan peran salah ditolak di server; admin tanpa role tambahan tidak dapat approve; session akun nonaktif ditolak pada permintaan berikutnya. Tidak ada secret/data nyata dalam repo.
@@ -139,6 +139,6 @@ Korpus sintetis minimal mencakup kelima peran, pengguna nonaktif, peran gabungan
 
 ## Pembaruan penerimaan setelah keputusan PO
 
-- Sprint 0: pengenal email dan username sama-sama menuju akun yang benar; kasus benturan dan normalisasi diuji. Pembuktian identitas dan pemulihan akun ditentukan sebelum implementasi autentikasi.
+- Sprint 0: pengenal email dan username sama-sama menuju akun yang benar; kasus benturan dan normalisasi diuji. Password disetujui sebagai pembuktian identitas; pemulihan akun belum dicakup Sprint 0.
 - Sprint 2 dan 3: Katim yang juga penulis berhasil approve karya sendiri setelah melalui status sah; tidak ada kebutuhan approver kedua. Penulis tanpa role Approver ditolak. Audit mencatat penulis dan approver walaupun orang yang sama.
 - Sprint 1 dan 4: Reader dapat membaca semua informasi isu yang final, termasuk ringkasan, background, timeline dan sumber final sesuai akses; draft pada semua jalur tetap tidak tampil. Pengujian final-only dalam rencana kini dikonfirmasi PO; rincian penerbitan kolom isu masih dalam Q-04.

@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+}
+enum RoleCode {
+  CONTRIBUTOR
+  EDITOR
+  APPROVER
+  READER
+  ADMIN
+}
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @db.Timestamptz(3)
+  roles        UserRole[]
+  sessions     Session[]
+  audits       AuditEvent[]
+}
+model Role {
+  code  RoleCode @id
+  users UserRole[]
+}
+model UserRole {
+  userId String
+  role   RoleCode
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  kind   Role @relation(fields: [role], references: [code], onDelete: Restrict)
+  @@id([userId, role])
+}
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  lastSeenAt DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([expiresAt])
+  @@index([userId])
+}
+model LoginThrottle {
+  key         String @id
+  attempts    Int
+  windowStart DateTime @db.Timestamptz(3)
+}
+model AuditEvent {
+  id        String @id @default(cuid())
+  actorId   String?
+  actor     User? @relation(fields: [actorId], references: [id], onDelete: Restrict)
+  action    String
+  entityId  String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([createdAt])
+}

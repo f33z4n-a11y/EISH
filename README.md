@@ -4,6 +4,10 @@ Aplikasi internal komunikasi publik. Implementasi saat ini **Sprint 0**: login, 
 
 Sumber kebutuhan: [PRD v1.0](docs/EISH_PRD_v1.0.md). Lihat [desain](docs/TECHNICAL-DESIGN.md), [rencana](docs/IMPLEMENTATION-PLAN.md), [keputusan](docs/OPEN-QUESTIONS.md), dan [laporan Sprint 0](docs/SPRINT-0.md).
 
+## UAT oleh Product Owner
+
+Ikuti [panduan UAT Sprint 0](docs/UAT-SPRINT-0.md) untuk pilihan browser cloud, persiapan komputer pribadi tanpa membagikan rahasia, checklist login/akses, serta hasil pengujian dan CI yang diverifikasi.
+
 ## Prasyarat
 
 Node.js 24 (versi pengembangan tercatat di `.nvmrc`), npm, Docker dengan Compose. PostgreSQL 17 berjalan lokal melalui Compose; tidak diekspos selain loopback. Paket JavaScript dipin di package-lock.json. Perintah dijalankan dari root repositori.

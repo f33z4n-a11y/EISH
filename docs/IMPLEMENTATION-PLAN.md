@@ -2,9 +2,19 @@
 
 > Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
 
-> Status: Usulan untuk ditinjau Product Owner (PO), 3 November 2026. Belum merupakan persetujuan implementasi.
-> Sumber: seluruh PRD v1.0 bagian 1–17 dalam `../EISH_PRD_v1.0.docx`. Berkas `PRD-EISH-v1.0.md` belum tersedia; kesetaraan sumber menunggu Q-01. PRD tidak diubah.
+> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
 > Seluruh dokumentasi dan label UI memakai Bahasa Indonesia; data hanya sintetis. Tidak ada kode aplikasi atau deployment produksi pada tahap ini.
+
+## Keputusan PO — 4 November 2026
+
+- **Sumber:** PRD resmi adalah `docs/EISH_PRD_v1.0.md`; verifikasi kesetaraan dengan sumber analisis awal selesai (Q-01).
+- **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
+- **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
+- **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
+- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+
+Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
 
 ## Format, kedalaman, dan kriteria keluaran
 
@@ -33,13 +43,13 @@ Fase analisis saat ini menghasilkan empat dokumen saja. PO meninjau [desain tekn
 
 **Tujuan:** kerangka aplikasi lokal yang dapat dijalankan, identitas dan kebijakan dasar, tanpa membangun seluruh fitur domain. Sumber: §4,14; NFR-01,02,08,09,10,11.
 
-**Dependensi:** Q-01 (sumber), Q-02/03 (batas role dan approval), Q-05 (login dev/session), serta persetujuan desain. Q-17 menentukan target aksesibilitas; Q-04 menghalangi finalisasi schema publikasi di Sprint 1.
+**Dependensi:** Verifikasi sumber Q-01 telah selesai. Katim/satu tingkat/izin persetujuan karya sendiri telah ditetapkan; rincian administrasi role Q-02/03, mekanisme verifikasi login/session Q-05, serta persetujuan desain tetap diperlukan. Q-17 menentukan target aksesibilitas; Q-04 menghalangi finalisasi schema publikasi di Sprint 1.
 
 **Paket pekerjaan:**
 
 1. S0.1: README/AGENTS, pin runtime/paket, lockfile, konfigurasi contoh tanpa secret, lint/typecheck/test dan CI.
 2. S0.2: Docker dev, PostgreSQL lokal, migrasi awal identitas/peran dan seed sintetis; dokumentasikan instalasi dan reset khusus data dummy.
-3. S0.3: login pengembangan yang disepakati, session dapat dicabut, cek akun aktif, kebijakan akses server dan matriks izin.
+3. S0.3: login dengan pengenal email atau username (mekanisme verifikasi masih Q-05), session dapat dicabut, cek akun aktif, kebijakan akses server dan matriks izin.
 4. S0.4: kerangka navigasi Bahasa Indonesia untuk operasional/Reader, keadaan kosong, error dan komponen aksesibel; belum membuat fitur penuh.
 
 **Kriteria penerimaan:** checkout bersih dapat dipasang dari lockfile dan menjalankan aplikasi serta database mengikuti README; migrasi di database kosong sukses; seed dapat diulang tanpa menggandakan akun; lima peran sintetis dapat diuji; anonim dan peran salah ditolak di server; admin tanpa role tambahan tidak dapat approve; session akun nonaktif ditolak pada permintaan berikutnya. Tidak ada secret/data nyata dalam repo.
@@ -62,11 +72,11 @@ Fase analisis saat ini menghasilkan empat dokumen saja. PO meninjau [desain tekn
 
 **Tujuan:** membedakan naskah siap digunakan dari draft, arsip dan pencabutan. FR-05, bagian FR-08; NFR-01,03,11.
 
-**Dependensi:** Sprint 1 lulus; Q-02/03 (mandat, tingkat/self-approval) dan Q-07 (masa berlaku/penyalinan) ditutup.
+**Dependensi:** Sprint 1 lulus; mandat Katim, satu tingkat dan persetujuan karya sendiri telah disahkan. Selesaikan rincian tersisa Q-02/03 dan Q-07 (masa berlaku/penyalinan).
 
 **Paket pekerjaan:** S2.1 statement dan versi per isu, alasan revisi dan histori; S2.2 submit/review/return dengan komentar; S2.3 approve atomik, supersede, revoke beralasan dan pointer approved; S2.4 tampilan detail, status teks, masa berlaku dan salin kanonis dengan audit relevan.
 
-**Kriteria penerimaan:** UAT-07,08,09 dan UAT-13 untuk statement lulus; v1 tetap default saat v2 draft; approval v2 menggantikan v1 tanpa menghapus histori; draft v3 tidak mengganti v2; revoke menghasilkan keadaan “Belum ada pernyataan siap digunakan” bila tidak ada yang sah; dua approval serentak menghasilkan keadaan valid tunggal; tidak ada copy utama untuk revoked/superseded/belum berlaku/kedaluwarsa. Teks salin sama karakter demi karakter dengan teks kanonis approved. Admin bukan approver otomatis.
+**Kriteria penerimaan:** UAT-07,08,09 dan UAT-13 untuk statement lulus; v1 tetap default saat v2 draft; approval v2 menggantikan v1 tanpa menghapus histori; draft v3 tidak mengganti v2; revoke menghasilkan keadaan “Belum ada pernyataan siap digunakan” bila tidak ada yang sah; dua approval serentak menghasilkan keadaan valid tunggal; tidak ada copy utama untuk revoked/superseded/belum berlaku/kedaluwarsa. Teks salin sama karakter demi karakter dengan teks kanonis approved. Admin bukan approver otomatis. Katim ber-role Approver dapat menyetujui karya sendiri dalam satu tingkat; penulis tanpa role Approver tetap ditolak.
 
 **Pengujian/bukti:** unit transisi dan rentang waktu termasuk batas WIB/UTC; integrasi PostgreSQL dengan transaksi paralel, rollback saat audit gagal dan constraint pointer; end-to-end seluruh peran untuk UAT-07–09,13; bypass UI dan percobaan SQL mengubah isi final ditolak. Keluar fase setelah invariant versi dan izin lulus.
 
@@ -74,11 +84,11 @@ Fase analisis saat ini menghasilkan empat dokumen saja. PO meninjau [desain tekn
 
 **Tujuan:** briefing terkurasi yang tetap sama setelah isu berubah. FR-04, ekspor FR-08; NFR-01,03,08,11.
 
-**Dependensi:** Sprint 2 lulus; Q-02 (mandat/sesi), Q-06 (revisi/status), Q-11 (format ekspor). PDF rekomendasi, bukan keputusan final.
+**Dependensi:** Sprint 2 lulus; mandat Katim, satu tingkat dan persetujuan karya sendiri telah ditetapkan; rincian role Q-02, Q-06 (revisi/status), Q-11 (format ekspor). PDF rekomendasi, bukan keputusan final.
 
 **Paket pekerjaan:** S3.1 pilih tiga atau lebih isu sintetis, salin ringkasan/update terpilih, susun urutan dan sunting independen; S3.2 review/return/approve/publish dengan metadata; S3.3 snapshot lengkap immutable, pointer final terpisah dan revisi lanjutan; S3.4 ekspor format MVP dari snapshot dengan layout Bahasa Indonesia.
 
-**Kriteria penerimaan:** UAT-05,06,12 dan UAT-13 untuk briefing lulus; sumber tidak berubah ketika salinan disunting; judul, teks, urutan, referensi dan metadata final tidak berubah setelah sumber berubah atau draft baru dibuat; Reader tetap membuka versi terbit selama revisi baru masih draft; edit setelah approval mengikuti kebijakan pembatalan approval; hanya mandat sah dapat terbitkan. Ekspor sesuai snapshot termasuk karakter Indonesia, paragraf, tabel bila diizinkan editor, halaman panjang dan referensi. Tidak mengekspor draft kepada Reader.
+**Kriteria penerimaan:** UAT-05,06,12 dan UAT-13 untuk briefing lulus; sumber tidak berubah ketika salinan disunting; judul, teks, urutan, referensi dan metadata final tidak berubah setelah sumber berubah atau draft baru dibuat; Reader tetap membuka versi terbit selama revisi baru masih draft; edit setelah approval mengikuti kebijakan pembatalan approval; hanya Katim dengan role Approver dapat menyetujui/terbitkan; persetujuan karya sendiri diizinkan dan diuji dalam satu tingkat. Ekspor sesuai snapshot termasuk karakter Indonesia, paragraf, tabel bila diizinkan editor, halaman panjang dan referensi. Tidak mengekspor draft kepada Reader.
 
 **Pengujian/bukti:** unit transisi/serialisasi; integrasi publikasi atomik dan larangan UPDATE/DELETE final; end-to-end UAT-05,06,12,13; perbandingan isi ekspor dengan snapshot dan pemeriksaan visual pagination. Pengujian snapshot membandingkan konten, bukan hanya hash berkas PDF yang dapat berbeda metadatanya. Keluar fase setelah integritas dan ekspor terverifikasi.
 
@@ -126,3 +136,9 @@ Urutan mengikuti PRD; perkiraan durasi baru dibuat setelah kapasitas tim, format
 | 4 | Frasa unik hanya terdapat dalam draft | Reader mencari frasa itu dan mencoba URL langsung | Tidak ada hasil/cuplikan/isi draft, termasuk melalui endpoint ekspor/lampiran |
 
 Korpus sintetis minimal mencakup kelima peran, pengguna nonaktif, peran gabungan sesuai keputusan, isu di semua status, update dengan tanggal input berbeda dari tanggal peristiwa, sumber jamak, draft dan final yang mengandung kata unik berbeda, versi statement digantikan/dicabut/kedaluwarsa, serta briefing terbit dengan revisi baru. Jumlah record beban tidak dikarang; ditentukan Q-16. Tidak memakai materi komunikasi pemerintah nyata atau kredensial produksi.
+
+## Pembaruan penerimaan setelah keputusan PO
+
+- Sprint 0: pengenal email dan username sama-sama menuju akun yang benar; kasus benturan dan normalisasi diuji. Pembuktian identitas dan pemulihan akun ditentukan sebelum implementasi autentikasi.
+- Sprint 2 dan 3: Katim yang juga penulis berhasil approve karya sendiri setelah melalui status sah; tidak ada kebutuhan approver kedua. Penulis tanpa role Approver ditolak. Audit mencatat penulis dan approver walaupun orang yang sama.
+- Sprint 1 dan 4: Reader dapat membaca semua informasi isu yang final, termasuk ringkasan, background, timeline dan sumber final sesuai akses; draft pada semua jalur tetap tidak tampil. Pengujian final-only dalam rencana kini dikonfirmasi PO; rincian penerbitan kolom isu masih dalam Q-04.

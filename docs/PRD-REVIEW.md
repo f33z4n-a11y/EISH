@@ -2,9 +2,19 @@
 
 > Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
 
-> Status: Usulan untuk ditinjau Product Owner (PO), 3 November 2026. Belum merupakan persetujuan implementasi.
-> Sumber yang dibaca seluruhnya: `../EISH_PRD_v1.0.docx`, PRD v1.0, bagian 1–17. Berkas `PRD-EISH-v1.0.md` yang disebut dalam permintaan belum tersedia. PRD asli tidak diubah; kesetaraan dengan berkas Markdown perlu dikonfirmasi (Q-01).
+> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
 > Bahasa dokumentasi dan antarmuka: Bahasa Indonesia. Nama teknologi, identifier, dan kode status dapat tetap memakai istilah teknis; label pengguna diterjemahkan. Pengembangan hanya memakai data sintetis. Tidak ada implementasi atau penerapan produksi pada tahap ini.
+
+## Keputusan PO — 4 November 2026
+
+- **Sumber:** PRD resmi adalah `docs/EISH_PRD_v1.0.md`; verifikasi kesetaraan dengan sumber analisis awal selesai (Q-01).
+- **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
+- **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
+- **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
+- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+
+Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
 
 ## Format, kedalaman, dan kriteria keluaran
 
@@ -26,7 +36,7 @@ Analisis bersifat berbasis dokumen. Tidak ada wawancara pengguna, verifikasi inf
 
 ## Kesimpulan
 
-PRD memadai untuk merancang monolit modular dan merencanakan Sprint 0. PRD belum memadai untuk menetapkan aturan persetujuan, batas informasi yang boleh dilihat Reader, dan kesiapan operasional. Risiko terbesar adalah kebocoran draft melalui ringkasan isu, pencarian, ekspor, lampiran, atau cache; perubahan snapshot setelah terbit; serta dua persetujuan statement bersamaan. Ketiganya perlu menjadi invariant server dan database, bukan hanya perilaku tampilan.
+PRD memadai untuk merancang monolit modular dan merencanakan Sprint 0. Aturan inti persetujuan telah ditetapkan PO: Katim sebagai Approver, satu tingkat, dan persetujuan karya sendiri diizinkan bila penulis juga Approver. Batas Reader sudah dikonfirmasi: seluruh informasi isu final dapat dibaca, draft tetap tersembunyi. Rincian penerbitan kolom isu dan kesiapan operasional masih perlu keputusan. Risiko terbesar adalah kebocoran draft melalui ringkasan isu, pencarian, ekspor, lampiran, atau cache; perubahan snapshot setelah terbit; serta dua persetujuan statement bersamaan. Ketiganya perlu menjadi invariant server dan database, bukan hanya perilaku tampilan.
 
 ## Inventaris kebutuhan fungsional
 
@@ -65,10 +75,10 @@ PRD memadai untuk merancang monolit modular dan merencanakan Sprint 0. PRD belum
 
 | Temuan / sumber | Dampak | Penanganan usulan / keputusan |
 |---|---|---|
-| PRD Markdown tidak tersedia; §17 meminta penyimpanan Markdown | Risiko mengulas versi yang berbeda | Jadikan DOCX sumber sementara, konfirmasi Q-01; jangan mengubah PRD |
+| Sumber Markdown telah tersedia dan dibaca seluruhnya | Perbedaan sumber telah diperiksa: 345 blok teks sama setelah normalisasi format | Q-01 selesai diverifikasi; gunakan `docs/EISH_PRD_v1.0.md`, tanpa mengubah PRD |
 | Update memiliki pilihan Published (§8), tetapi model §7 tidak punya status/publisher | Draft bocor atau publikasi tidak terlacak | Tambahkan metadata publikasi dan rujukan revisi terbit; Q-04 |
 | Current summary/background dan label isu bisa diedit, tanpa aturan publikasi | Reader dapat membaca perubahan belum disahkan meski update difilter | Pisahkan revisi internal dan revisi yang diterbitkan; cakupan kolom harus disahkan Q-04 |
-| Role tidak menentukan mandat per sesi, self-approval atau dua tingkat (§4,16) | Orang salah menyetujui; skema workflow berubah terlambat | Matriks aksi/objek/penugasan; keputusan Q-02,03 sebelum workflow |
+| Keputusan persetujuan PO memperjelas §4,16 | Katim adalah Approver; satu tingkat; penulis dengan role Approver boleh menyetujui sendiri | Uji role server dan audit; rincian pemberian role/review/pencabutan yang belum dijawab tetap terbuka dalam Q-02/03 |
 | Briefing status di induk, tetapi revisi published harus tetap tersedia (§7) | Draft revisi dapat menggantikan tampilan final | Status per revisi dan pointer published terpisah dari revisi kerja; Q-06 |
 | Statement approved di masa depan, kedaluwarsa, dicabut atau approval bersamaan | Salah label Siap Digunakan; dua versi aktif | Validitas waktu server dan transaksi terkunci; jangan otomatis kembali ke versi lama; Q-07 |
 | Apa yang Baru: terakhir dilihat atau briefing terakhir, created_at atau published_at | Update lama yang baru terbit hilang; titik acuan terhapus tanpa dibaca | Gunakan waktu publikasi untuk Reader, tentukan pembaruan titik acuan dan histori label Q-09 |
@@ -91,11 +101,11 @@ PRD §17 memuat contoh prompt untuk implementasi Sprint 0; instruksi pengguna sa
 | Tingkat | Temuan | Contoh kegagalan dan gerbang |
 |---|---|---|
 | Kritis | Batas final/draft tidak lengkap | Reader membuka isu terbit tetapi mendapat background yang baru diedit internal; Q-04 wajib sebelum schema publikasi Sprint 1 |
-| Kritis | Mandat dan tingkat persetujuan belum ditetapkan | Admin atau penulis dapat menyetujui substansi tanpa mandat; Q-02/03 wajib sebelum kebijakan persetujuan |
+| Kritis | Penegakan mandat persetujuan | Hanya Katim ber-role Approver boleh menyetujui, termasuk karya sendiri; penulis biasa dan Admin tanpa role Approver tetap ditolak; Q-02/03 tersisa untuk rincian administrasi |
 | Kritis | Versi final dan approval bersamaan | Dua approver memperbarui pointer atau snapshot berbeda; transaksi dan constraint harus diuji sebelum Sprint 2/3 selesai |
 | Tinggi | Masa berlaku statement dan penarikan | Tombol salin memberi versi kedaluwarsa atau mengaktifkan arsip tanpa izin; Q-07 sebelum Sprint 2 |
 | Tinggi | Pemulihan dan session | Akun nonaktif masih memakai sesi atau backup tidak mencakup lampiran; Q-05/14 sebelum kemampuan terkait dinyatakan lulus |
-| Tinggi | Sumber PRD belum terkonfirmasi | Berkas Markdown berbeda dari DOCX yang dianalisis; Q-01 sebelum persetujuan desain |
+| Selesai | Verifikasi sumber PRD | Markdown resmi telah dibaca dan 345 blok teks setara DOCX setelah normalisasi; Q-01 tidak lagi menghalangi desain |
 | Sedang | Relevansi pencarian, duplikat dan target kinerja | Hasil Bahasa Indonesia tidak relevan atau target 3 detik tidak dapat direproduksi; Q-10/16 sebelum verifikasi fase terkait |
 
 Tingkat di atas adalah penilaian risiko teknis, bukan penggantian prioritas produk P0/P1. Tidak ada temuan yang memberi izin untuk memperluas fitur MVP.

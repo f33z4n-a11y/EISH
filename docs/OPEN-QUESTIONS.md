@@ -2,13 +2,23 @@
 
 > Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
 
-> Status: Usulan untuk ditinjau Product Owner (PO), 3 November 2026. Belum merupakan persetujuan implementasi.
-> Sumber: seluruh PRD v1.0 bagian 1–17 dalam `../EISH_PRD_v1.0.docx`. Berkas `PRD-EISH-v1.0.md` belum tersedia; kesetaraan sumber menunggu Q-01. PRD tidak diubah.
+> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
 > Seluruh dokumentasi dan label UI memakai Bahasa Indonesia; data hanya sintetis. Tidak ada kode aplikasi atau deployment produksi pada tahap ini.
+
+## Keputusan PO — 4 November 2026
+
+- **Sumber:** PRD resmi adalah `docs/EISH_PRD_v1.0.md`; verifikasi kesetaraan dengan sumber analisis awal selesai (Q-01).
+- **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
+- **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
+- **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
+- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+
+Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
 
 ## Format, kedalaman, dan kriteria keluaran
 
-Daftar keputusan memakai ID stabil, sumber PRD, pertanyaan operasional, rekomendasi, pemilik dan batas waktu dependensi. Semua keputusan berstatus **Belum dikonfirmasi**. Rekomendasi adalah usulan untuk memudahkan review, bukan persetujuan tersirat.
+Daftar keputusan memakai ID stabil, sumber PRD, pertanyaan operasional, rekomendasi, pemilik dan batas waktu dependensi. Status setiap butir diperbarui sesuai keputusan PO; rincian yang belum dijawab tetap terbuka. Rekomendasi adalah usulan untuk memudahkan review, bukan persetujuan tersirat.
 
 Kriteria keluaran: seluruh keputusan §16 tercakup bersama gap keamanan/integritas yang ditemukan; setiap pertanyaan menjelaskan hal yang perlu diputuskan dan kapan ia menghalangi pekerjaan; tidak meminta rahasia atau keputusan organisasi ditebak oleh pengembang. PO dapat mencatat jawaban dengan format `ID — keputusan — pemberi persetujuan — tanggal — alasan/dampak`. Keputusan yang mengubah kebutuhan dikembalikan ke proses persetujuan produk tanpa mengubah PRD dalam tugas ini.
 
@@ -22,48 +32,48 @@ Kriteria kelengkapan: semua keputusan pada PRD §16 terwakili, termasuk sesi bri
 
 ### Q-01 — Sumber PRD
 
-- **Sumber:** §17; berkas Markdown belum ada.
-- **Pertanyaan:** Apakah DOCX yang tersedia merupakan sumber yang sama dengan PRD Markdown yang dimaksud? Jika berbeda, versi mana yang berlaku?
-- **Rekomendasi sementara:** Gunakan DOCX sebagai sumber analisis sementara; jangan mengubah PRD.
-- **Pemilik keputusan:** PO.
-- **Gerbang:** Sebelum persetujuan desain.
-- **Status:** Belum dikonfirmasi.
+- **Sumber resmi:** `docs/EISH_PRD_v1.0.md` di GitHub `main`, commit sumber `8e6804679cc3d2fa5fed56b888f82749b70f2711`.
+- **Hasil:** Markdown dibaca seluruhnya; 345 blok teks identik dengan DOCX analisis awal setelah normalisasi format. SHA-256 dicatat pada awal dokumen.
+- **Keputusan:** gunakan Markdown sebagai sumber resmi; tidak perlu mengulang analisis atas teks yang sama. PRD tidak diubah.
+- **Status:** Selesai diverifikasi, 4 November 2026; tidak lagi menghalangi desain.
 
 ### Q-02 — Mandat dan pemisahan tugas
 
-- **Sumber:** §4,8,16.
-- **Pertanyaan:** Siapa Approver briefing tiap sesi dan statement? Bolehkah menyetujui karya sendiri? Siapa boleh memberikan role Approver? Bagaimana gabungan peran, lingkup baca Contributor/Admin dan review Approver?
-- **Rekomendasi sementara:** Matriks eksplisit per aksi dan objek; Admin tidak otomatis approve; self-approval ditolak sampai kebijakan disahkan.
+- **Sumber:** §4,8,16; keputusan PO dalam percakapan, 4 November 2026.
+- **Keputusan disahkan:** Approver briefing dan statement adalah Ketua Tim (Katim). Penulis boleh menyetujui karya sendiri bila akun penulis juga memiliki role Approver; penulis biasa tidak otomatis menjadi Approver. Admin tidak otomatis boleh menyetujui substansi.
+- **Masih perlu keputusan:** siapa berwenang memberikan/mencabut role Approver, lingkup baca internal Contributor/Admin, dan rincian kombinasi peran operasional.
 - **Pemilik keputusan:** PO dan pemilik mandat.
-- **Gerbang:** Sebelum fondasi izin; final sebelum Sprint 2–3.
-- **Status:** Belum dikonfirmasi.
+- **Gerbang:** rincian izin yang tersisa sebelum implementasi bagian terkait.
+- **Status:** Diputuskan sebagian; mandat dan izin persetujuan karya sendiri sudah final, rincian administrasi role terbuka.
 
 ### Q-03 — Tingkat approval
 
-- **Sumber:** §16.
-- **Pertanyaan:** Statement memerlukan satu atau dua tingkat? Apakah briefing sama? Siapa dapat mengembalikan, menolak dan mencabut, serta bagaimana revisi setelah penolakan?
-- **Rekomendasi sementara:** Satu tingkat sesuai asumsi awal PRD hanya bila PO menyetujui; jangan membangun mesin workflow generik.
+- **Sumber:** §16; keputusan PO, 4 November 2026.
+- **Keputusan disahkan:** persetujuan briefing dan statement hanya satu tingkat, dilakukan Katim ber-role Approver; tidak memerlukan pemberi persetujuan kedua.
+- **Masih perlu keputusan:** mandat rinci mengembalikan/menolak/mencabut dan aturan revisi setelah penolakan. Komentar pengembalian dan alasan pencabutan tetap wajib sesuai PRD.
 - **Pemilik keputusan:** PO.
-- **Gerbang:** Sebelum schema workflow/Sprint 2.
-- **Status:** Belum dikonfirmasi.
+- **Gerbang:** rincian transisi sebelum Sprint 2/3; jumlah tingkat tidak lagi menjadi penghalang.
+- **Status:** Jumlah tingkat diputuskan; rincian transisi tersisa terbuka.
 
 ### Q-04 — Visibilitas isu dan publikasi
 
-- **Sumber:** FR-03,07; §8.
-- **Pertanyaan:** Apakah hanya update Published yang tampil ke Reader? Bagaimana judul, background, summary, flag perhatian, label, sumber dan lampiran disahkan? Apa yang terjadi saat final diedit/ditarik atau isu dihapus lunak?
-- **Rekomendasi sementara:** Reader membaca revisi terbit; edit membuat revisi kerja; Editor menerbitkan. Kebijakan field dan penarikan harus eksplisit.
+- **Sumber:** FR-03,07; §8; pernyataan PO, 4 November 2026.
+- **Keputusan disahkan:** Reader boleh melihat seluruh informasi isu yang sudah final. Draft isu, update, briefing dan statement tetap tersembunyi; Reader tidak diberi hak edit/persetujuan.
+- **Masih perlu keputusan:** siapa menerbitkan judul, background, summary, flag, sumber dan lampiran; bagaimana final ditarik atau dihapus lunak. Batas final/draft tidak lagi terbuka.
+- **Dampak desain/pengujian:** proyeksi Reader memakai revisi terbit; pencarian, URL langsung, ekspor dan lampiran tidak boleh membocorkan draft. Selaras dengan batas final-only PRD; statement siap salin tetap harus approved dan berlaku.
 - **Pemilik keputusan:** PO.
-- **Gerbang:** Sebelum Sprint 1.
-- **Status:** Belum dikonfirmasi.
+- **Gerbang:** sebelum finalisasi visibilitas Sprint 1 dan portal Sprint 4.
+- **Status:** Cakupan final-only diputuskan PO, 4 November 2026; rincian publikasi/penarikan masih terbuka.
 
 ### Q-05 — Login, session dan SSO
 
-- **Sumber:** §4,11,16; NFR-01.
-- **Pertanyaan:** Provider login development/pilot apa? Siapa membuat akun? Berapa timeout idle/absolut? Apakah SSO wajib saat pilot dan sudah disetujui TI?
-- **Rekomendasi sementara:** Auth.js kandidat; session dapat dicabut; cek status akun/peran setiap permintaan; akun dummy hanya lokal; jangan mengasumsikan email atau SSO tersedia.
+- **Sumber:** §4,11,16; NFR-01; keputusan PO, 4 November 2026.
+- **Keputusan disahkan:** login memakai email atau username sebagai pengenal akun.
+- **Masih perlu keputusan:** bagaimana pembuktian identitas (misalnya password), siapa membuat akun dan proses pemulihannya, timeout idle/absolut, serta kebutuhan SSO pilot yang disetujui TI. Email/username saja belum menetapkan credential atau provider.
+- **Rekomendasi teknis:** email/username unik ternormalisasi tanpa benturan antar-akun; Auth.js kandidat, session dapat dicabut, cek akun aktif/peran pada setiap permintaan. Akun development hanya sintetis.
 - **Pemilik keputusan:** PO dan TI.
-- **Gerbang:** Sebelum Sprint 0; identitas pilot sebelum pilot.
-- **Status:** Belum dikonfirmasi.
+- **Gerbang:** sebelum implementasi autentikasi Sprint 0; identitas pilot sebelum pilot.
+- **Status:** Pengenal login diputuskan; mekanisme verifikasi/session/provisioning masih terbuka.
 
 ### Q-06 — Revisi briefing
 
@@ -175,7 +185,7 @@ Kriteria kelengkapan: semua keputusan pada PRD §16 terwakili, termasuk sesi bri
 
 ## Urutan review yang disarankan
 
-Pertama konfirmasi Q-01 dan persetujuan desain; selanjutnya tetapkan Q-02–05 agar pondasi izin dan publikasi tidak perlu dibangun ulang. Putuskan Q-07 sebelum versi statement, Q-06/Q-11 sebelum briefing, dan kebijakan TI Q-12–14 sebelum fasilitas terkait atau pilot. Pertanyaan lainnya dapat diputuskan bersama backlog fase yang bergantung padanya.
+Q-01 sudah selesai. Berikutnya tinjau desain dan selesaikan rincian tersisa Q-02–05 agar pondasi izin dan publikasi tidak perlu dibangun ulang. Putuskan Q-07 sebelum versi statement, Q-06/Q-11 sebelum briefing, dan kebijakan TI Q-12–14 sebelum fasilitas terkait atau pilot. Pertanyaan lainnya dapat diputuskan bersama backlog fase yang bergantung padanya.
 
 Pekerjaan tahap ini berhenti pada empat dokumen. Tidak ada keputusan yang dianggap disetujui karena tidak dijawab, dan persetujuan desain tidak berarti persetujuan deployment produksi.
 
@@ -183,10 +193,10 @@ Pekerjaan tahap ini berhenti pada empat dokumen. Tidak ada keputusan yang diangg
 
 | Urutan | ID | Jawaban minimum yang diperlukan | Dampak bila belum dijawab |
 |---|---|---|---|
-| 1 | Q-01 | DOCX dikonfirmasi setara atau sumber PRD yang benar disediakan | Analisis belum dapat dianggap terhadap sumber Markdown yang diminta |
+| Selesai | Q-01 | Markdown resmi sudah dibaca dan kesetaraan 345 blok teks diverifikasi | Tidak lagi menghalangi desain |
 | 2 | Persetujuan desain | Setuju / revisi beserta bagian yang perlu diubah | Seluruh penulisan kode aplikasi tetap ditunda |
-| 3 | Q-02, Q-03 | Matriks mandat, kombinasi peran, self-approval dan jumlah tingkat | Kebijakan persetujuan dan model keputusan belum final |
-| 4 | Q-04 | Daftar informasi final untuk Reader dan siapa menerbitkannya | Schema revisi/publikasi isu belum final |
-| 5 | Q-05 | Provider login development dan aturan pencabutan/masa session | Fondasi identitas belum dapat diimplementasikan lengkap |
+| 3 | Q-02, Q-03 | Katim, satu tingkat dan persetujuan karya sendiri sudah ditetapkan; lengkapi pemberian role dan mandat transisi | Hanya rincian izin/transisi tersisa yang belum final |
+| 4 | Q-04 | Reader final-only sudah ditetapkan; lengkapi pelaku publikasi kolom isu dan aturan penarikan | Hanya rincian publikasi/penarikan yang belum final |
+| 5 | Q-05 | Pengenal email/username sudah ditetapkan; putuskan mekanisme verifikasi, provisioning dan masa session | Fondasi identitas belum dapat diimplementasikan lengkap |
 
 Persetujuan teknis tidak menggantikan keputusan substantif PO atau persetujuan infrastruktur/keamanan TI. Jika sebagian desain disetujui, catat batas bagian yang disetujui; jangan menafsirkan itu sebagai izin membangun semua sprint.

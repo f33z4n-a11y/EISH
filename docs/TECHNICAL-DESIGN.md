@@ -2,9 +2,19 @@
 
 > Edisi analisis berdasarkan permintaan terbaru. Seluruh rekomendasi memerlukan peninjauan; review terdahulu tidak dianggap sebagai keputusan atau persetujuan.
 
-> Status: Usulan untuk ditinjau Product Owner (PO), 3 November 2026. Belum merupakan persetujuan implementasi.
-> Sumber yang dibaca seluruhnya: `../EISH_PRD_v1.0.docx`, PRD v1.0, bagian 1–17. Berkas `PRD-EISH-v1.0.md` yang disebut dalam permintaan belum tersedia. PRD asli tidak diubah; kesetaraan dengan berkas Markdown perlu dikonfirmasi (Q-01).
+> Status: Analisis diperbarui 4 November 2026 dengan keputusan PO; desain keseluruhan belum disetujui untuk implementasi.
+> Sumber resmi: [EISH_PRD_v1.0.md](EISH_PRD_v1.0.md), PRD v1.0 bagian 1–17; berkas telah dibaca seluruhnya dari GitHub `main` pada commit `8e6804679cc3d2fa5fed56b888f82749b70f2711`. Verifikasi 4 November 2026: 345 blok teks identik dengan DOCX yang digunakan pada analisis awal setelah normalisasi penanda Markdown, spasi, dan penomoran daftar. SHA-256 Markdown: `3568d07503468ad366dc9b7d5809d98681baf7657f10aa932c06b47a012c3904`. PRD asli tidak diubah; tidak diperlukan pengulangan analisis karena tidak ditemukan perbedaan teks kebutuhan.
 > Bahasa dokumentasi dan antarmuka: Bahasa Indonesia. Nama teknologi, identifier, dan kode status dapat tetap memakai istilah teknis; label pengguna diterjemahkan. Pengembangan hanya memakai data sintetis. Tidak ada implementasi atau penerapan produksi pada tahap ini.
+
+## Keputusan PO — 4 November 2026
+
+- **Sumber:** PRD resmi adalah `docs/EISH_PRD_v1.0.md`; verifikasi kesetaraan dengan sumber analisis awal selesai (Q-01).
+- **Approver:** Ketua Tim (Katim) adalah pejabat yang memegang role Approver untuk briefing dan statement. Role ini tetap diperiksa server; penulis tanpa role Approver tidak memperoleh hak persetujuan (Q-02).
+- **Persetujuan:** satu tingkat untuk briefing dan statement. Penulis yang juga memegang role Approver boleh menyetujui naskah sendiri; aktor penulis dan pemberi persetujuan tetap dicatat apa adanya dalam audit (Q-02/03). Tidak ada syarat approver kedua atau larangan persetujuan karya sendiri.
+- **Reader:** PO menegaskan Reader boleh melihat seluruh informasi isu yang sudah final; draft isu, update, briefing dan statement tetap tersembunyi. Akses baca tidak memberikan hak edit atau approval; tombol salin utama tetap hanya untuk statement approved yang berlaku (Q-04).
+- **Login:** pengguna dapat memakai email atau username sebagai pengenal login (Q-05). Mekanisme pembuktian identitas (misalnya password), provisioning, pemulihan akun, timeout session dan kebutuhan SSO belum ditetapkan; tidak diasumsikan sudah disetujui.
+
+Keputusan ini melengkapi analisis tanpa mengubah PRD dan tidak merupakan persetujuan keseluruhan desain atau izin menulis kode aplikasi. Status terbuka pada bagian lain hanya berlaku untuk rincian yang belum diputuskan.
 
 ## Format, kedalaman, dan kriteria keluaran
 
@@ -51,7 +61,7 @@ Struktur usulan: rute Next.js sebagai adaptor tipis; modul domain berisi layanan
 | PostgreSQL | Cocok untuk relasi, transaksi, audit, JSONB snapshot dan full-text search | FTS Bahasa Indonesia perlu uji relevansi; mulai konfigurasi simple, jangan mengasumsikan stemming Indonesia tersedia. Indeks sesuai filter; migrasi dan backup wajib |
 | Prisma ORM | Model relasi bertipe, migrasi dan transaksi mudah dirawat | Constraint parsial, proteksi snapshot dan FTS dapat membutuhkan SQL migrasi terulas. Hindari pola read-then-write tanpa locking; jangan memakai SQLite sebagai pengganti uji integrasi PostgreSQL |
 | Tiptap | Rich text terstruktur dan extension terbatas cocok editor manual | Output tetap tidak terpercaya; sanitasi server. Tetapkan fitur format minimal dan versi schema JSON; pastikan extension/lisensi yang dipilih tersedia. Tidak mengaktifkan kolaborasi real-time |
-| Auth.js + RBAC | Kandidat pengelolaan session; aturan domain tetap milik aplikasi | Provider login, masa sesi dan provisioning belum diputuskan. Auth.js bukan mesin RBAC. Rekomendasi session yang dapat dicabut dan cek akun aktif; jangan membuat akun bawaan untuk produksi |
+| Auth.js + RBAC | Kandidat pengelolaan session; aturan domain tetap milik aplikasi | Pengenal login email atau username sudah diputuskan PO; mekanisme verifikasi, masa sesi dan provisioning belum diputuskan. Auth.js bukan mesin RBAC. Rekomendasi session yang dapat dicabut dan cek akun aktif; jangan membuat akun bawaan untuk produksi |
 | Docker | Lingkungan dev konsisten, dapat dipindah sesuai NFR-10 | Image/version dipin, proses non-root, health check, volume privat; migrasi dijalankan terkontrol. Container bukan backup atau pemisahan akses data secara otomatis |
 
 Tidak menetapkan nomor versi tanpa pemeriksaan kompatibilitas paket, runtime, lisensi dan dukungan keamanan saat Sprint 0. PostgreSQL lokal via Docker mengikuti asumsi §16; volume lampiran privat atau S3-compatible ditentukan TI, bukan integrasi wajib baru. Ekspor PDF direkomendasikan sesuai asumsi PRD, masih menunggu Q-11.
@@ -67,14 +77,14 @@ Semua akses: autentikasi → cek akun aktif/session → cek aksi/peran → cek p
 | Kirim review | Milik/ditugaskan | Ya | Jika peran relevan | Tidak | Tidak otomatis |
 | Review/kembalikan | Tidak | Ya, komentar wajib | Sesuai mandat* | Tidak | Tidak otomatis |
 | Publikasi update/revisi isu | Tidak | Usulan, Q-04 | Jika punya peran relevan | Tidak | Tidak otomatis |
-| Setujui/terbitkan briefing | Tidak | Tidak otomatis | Sesuai mandat/sesi* | Tidak | Tidak otomatis |
-| Setujui/cabut statement | Tidak | Tidak otomatis | Sesuai mandat* | Tidak | Tidak otomatis |
+| Setujui/terbitkan briefing | Tidak | Tidak otomatis | Katim; satu tingkat; boleh karya sendiri | Tidak | Tidak otomatis |
+| Setujui/cabut statement | Tidak | Tidak otomatis | Katim menyetujui satu tingkat, termasuk karya sendiri; pencabutan sesuai mandat* | Tidak | Tidak otomatis |
 | Baca final dan salin approved berlaku | Sesuai akses | Ya | Ya | Ya | Sesuai akses* |
 | Kelola pengguna/peran/kategori/audit | Tidak | Tidak | Tidak otomatis | Tidak | Ya |
 
-Tanda * memerlukan Q-02–05; tabel adalah usulan konservatif, bukan aturan organisasi yang sudah disahkan. Peran gabungan tidak boleh melewati larangan self-approval bila larangan itu disepakati. Pemberian peran harus diaudit; otoritas admin memberi peran Approver perlu diputuskan. Pembacaan audit tidak memberi akses otomatis ke seluruh naskah sensitif.
+Tanda * menandai rincian Q-02–05 yang masih terbuka. Mandat Katim, satu tingkat dan izin persetujuan karya sendiri telah disahkan PO. Penulis dengan role Approver boleh menyetujui naskahnya sendiri; penulis tanpa role tersebut tetap ditolak. Reader hanya membaca informasi final, draft tetap tersembunyi sesuai keputusan PO; rincian penerbitan isu tetap dalam Q-04. Pemberian peran harus diaudit; otoritas admin memberi peran Approver perlu diputuskan. Pembacaan audit tidak memberi akses otomatis ke seluruh naskah sensitif.
 
-Session: cookie HttpOnly, SameSite dan Secure di HTTPS; proteksi CSRF/origin sesuai mekanisme framework; tidak menyimpan session di URL. Nonaktif akun/ubah peran berlaku pada permintaan terlindungi berikutnya melalui pemeriksaan server. Login dibatasi percobaan dan kesalahan tidak mengungkap keberadaan akun; durasi dan provider menunggu PO/TI. Semua rahasia lewat konfigurasi lingkungan aman, tidak dicatat di audit.
+Session: cookie HttpOnly, SameSite dan Secure di HTTPS; proteksi CSRF/origin sesuai mekanisme framework; tidak menyimpan session di URL. Nonaktif akun/ubah peran berlaku pada permintaan terlindungi berikutnya melalui pemeriksaan server. Login dibatasi percobaan dan kesalahan tidak mengungkap keberadaan akun; pengenal email/username telah disetujui, sedangkan mekanisme verifikasi, durasi dan provider menunggu PO/TI. Semua rahasia lewat konfigurasi lingkungan aman, tidak dicatat di audit.
 
 ## Model data konseptual
 
@@ -82,8 +92,8 @@ Semua ID stabil dan tidak bergantung judul/slug. Waktu kejadian server memakai t
 
 | Entitas | Atribut utama | Relasi dan constraint |
 |---|---|---|
-| User | id, nama, email, status, waktu dibuat/diubah | Email unik ternormalisasi; 1:N isu, update, revisi, approval dan audit; nonaktif tanpa menghapus jejak |
-| Role, UserRole | id/kode peran; user_id, role_id | User N:M Role; pasangan unik; mandat tambahan hanya setelah Q-02,03 |
+| User | id, nama, email, username, status, waktu dibuat/diubah | Email dan username unik ternormalisasi; cegah ambiguitas pengenal antar-akun; 1:N isu, update, revisi, approval dan audit; nonaktif tanpa menghapus jejak |
+| Role, UserRole | id/kode peran; user_id, role_id | User N:M Role; pasangan unik; Katim memakai role Approver, persetujuan satu tingkat; pemberian role menunggu rincian Q-02 |
 | Session (teknis) | id/token hash, user_id, expires_at | User 1:N Session; implementasi mengikuti provider yang disetujui |
 | Category | id, nama, active | 1:N Issue; nonaktif tidak menghapus kategori historis |
 | Issue | id, slug, judul, kategori, owner_id, keywords, first_recorded_date, lifecycle_status, attention_flag, deleted_at, lock_version | Category/User 1:N Issue; Issue 1:N Update, Statement, Revision, Source; status perhatian terpisah; slug boleh berubah tetapi tautan ID tetap |
@@ -96,7 +106,7 @@ Semua ID stabil dan tidak bergantung judul/slug. Waktu kejadian server memakai t
 | BriefingItem | id, revision_id, issue_id, display_order, copied_snapshot, selected_update_revision_ids | BriefingRevision 1:N Item; Issue 1:N Item sehingga Issue N:M Briefing; unique(revision_id,display_order); snapshot teks/judul/sumber, bukan sekadar ID hidup |
 | Statement | id, issue_id, title, current_approved_version_id?, deleted_at | Issue 1:N Statement; pointer hanya ke versi statement sendiri; satu pointer per statement |
 | StatementVersion | id, statement_id, version_no, title_snapshot, rich_text/text, canonical_copy_text, status, change_reason, created_by, edited_by, approved_by/at?, valid_from/until?, sensitivity, revoked_by/at/reason?, lock_version | Unique(statement_id,version_no); valid_until > valid_from bila keduanya ada; isi approved/superseded/revoked tidak dapat diedit; nomor versi tidak dipakai ulang |
-| ReviewDecision (usulan teknis) | id, jenis_objek, revision/version_id, actor_id, aksi, komentar, waktu | Riwayat submit/reject/approve per versi; gunakan FK bertipe atau constraint tepat satu target, hindari referensi polimorfik tanpa validasi; dua tingkat approval baru setelah Q-03 |
+| ReviewDecision (usulan teknis) | id, jenis_objek, revision/version_id, actor_id, aksi, komentar, waktu | Riwayat submit/reject/approve per versi; gunakan FK bertipe atau constraint tepat satu target, hindari referensi polimorfik tanpa validasi; satu tingkat approval sesuai keputusan PO; aktor persetujuan boleh sama dengan penulis |
 | AuditEvent | id, actor_id, entity_type/id, aksi, server_timestamp, metadata ringkas | User 1:N Audit; append-only, akses terbatas, tanpa password/token; mencatat perubahan dan rujukan revisi |
 | Attachment | id, nama_asli, storage_key, mime_type, size, checksum, uploaded_by/at, deleted_at? | Direferensikan Source; key privat unik; akses mengikuti objek induk; backup bersama database; hanya jika lampiran diaktifkan |
 | ReaderCheckpoint (usulan teknis Q-09) | user_id, konteks, last_seen_at atau briefing_revision_id | Menyimpan titik acuan sesuai FR-03; unique(user_id,konteks); bukan pelacakan analitik |
@@ -149,3 +159,9 @@ Kode URL mengikuti PRD, sedangkan judul menu dan pesan pengguna memakai Bahasa I
 Monolit dipilih karena alur manual dan transaksi lintas status lebih sederhana dirawat dalam satu aplikasi. Memisahkan backend menjadi layanan terpisah menambah autentikasi antarservice dan deployment tanpa kebutuhan PRD. PostgreSQL dipilih karena snapshot, versi dan relasi membutuhkan konsistensi transaksional; penyimpanan dokumen bebas skema tidak menghilangkan kebutuhan invariant relasional. Redis, message broker, mesin workflow umum dan layanan pencarian eksternal tidak dimasukkan. Bila uji profil nyata kelak menunjukkan batas, perubahan arsitektur diajukan melalui review tersendiri.
 
 Risiko operasional satu aplikasi ditangani melalui pembatasan akses database/storage, transaksi singkat, observabilitas operasional dasar sesuai NFR-04, backup dan prosedur pemulihan. Rancangan ini tidak mengklaim high availability atau kepatuhan organisasi sebelum TI menetapkan dan menguji kriterianya.
+
+## Dampak keputusan terhadap pengujian
+
+Pengujian positif wajib membuktikan Katim dengan role Approver dapat menyetujui karya sendiri untuk briefing maupun statement dalam satu tingkat; tetap ikuti submit/review/status sah, tidak melewati validasi versi dan transaksi. Pengujian negatif membuktikan penulis biasa serta Admin tanpa role Approver tidak dapat menyetujui. Simpan actor penulis dan approver meski ID sama; jangan menciptakan aktor kedua fiktif.
+
+Login diuji menggunakan email dan username menuju akun yang sama, termasuk normalisasi dan pencegahan benturan pengenal antar-akun, pesan gagal yang tidak membocorkan akun, serta penolakan akun nonaktif. Bentuk credential dan pemulihannya menunggu Q-05; username adalah pengenal, bukan bukti autentikasi dengan sendirinya.

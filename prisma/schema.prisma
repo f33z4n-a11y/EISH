@@ -1,9 +1,11 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
 }
+
 enum RoleCode {
   CONTRIBUTOR
   EDITOR
@@ -11,52 +13,247 @@ enum RoleCode {
   READER
   ADMIN
 }
+
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  username     String   @unique
-  passwordHash String
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt    DateTime @updatedAt @db.Timestamptz(3)
-  roles        UserRole[]
-  sessions     Session[]
-  audits       AuditEvent[]
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  username       String          @unique
+  passwordHash   String
+  active         Boolean         @default(true)
+  createdAt      DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime        @updatedAt @db.Timestamptz(3)
+  roles          UserRole[]
+  sessions       Session[]
+  audits         AuditEvent[]
+  ownedIssues    IssueRecord[]   @relation("IssueOwner")
+  assignedIssues IssueRecord[]   @relation("IssueAssignee")
+  issueRevisions IssueRevision[] @relation("IssueAuthor")
+  statements     Statement[]     @relation("StatementAuthor")
+  statementVersions StatementVersion[] @relation("StatementVersionAuthor")
+  authoredBriefings Briefing[] @relation("BriefingAuthor")
+  briefingRevisions BriefingRevision[] @relation("BriefingRevisionAuthor")
+  readerCheckpoint ReaderCheckpoint?
 }
+
+model ReaderCheckpoint {
+  userId     String   @id
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSeenAt DateTime @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+}
+
 model Role {
-  code  RoleCode @id
+  code  RoleCode   @id
   users UserRole[]
 }
+
 model UserRole {
   userId String
   role   RoleCode
-  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
-  kind   Role @relation(fields: [role], references: [code], onDelete: Restrict)
+  user   User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  kind   Role     @relation(fields: [role], references: [code], onDelete: Restrict)
+
   @@id([userId, role])
 }
+
 model Session {
-  id        String   @id @default(cuid())
-  tokenHash String   @unique
-  userId    String
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  userId     String
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
   lastSeenAt DateTime @default(now()) @db.Timestamptz(3)
-  expiresAt DateTime @db.Timestamptz(3)
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime @db.Timestamptz(3)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([expiresAt])
   @@index([userId])
 }
+
 model LoginThrottle {
-  key         String @id
+  key         String   @id
   attempts    Int
   windowStart DateTime @db.Timestamptz(3)
 }
+
 model AuditEvent {
-  id        String @id @default(cuid())
-  actorId   String?
-  actor     User? @relation(fields: [actorId], references: [id], onDelete: Restrict)
-  action    String
-  entityId  String?
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: Restrict)
+  action     String
+  entityType String?
+  metadata   Json?
+  entityId   String?
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+
   @@index([createdAt])
+}
+
+enum IssueKind {
+  ISSUE
+  UPDATE
+}
+
+enum IssuePriority {
+  VERY_HIGH
+  HIGH
+  MEDIUM
+  LOW
+}
+
+model Category {
+  issues IssueRecord[]
+  id     String        @id @default(cuid())
+  code   String?       @unique
+  name   String        @unique
+  active Boolean       @default(true)
+}
+
+model IssueRecord {
+  id               String          @id @default(cuid())
+  kind             IssueKind
+  categoryId       String?
+  category         Category?       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  parentId         String?
+  parent           IssueRecord?    @relation("Timeline", fields: [parentId], references: [id], onDelete: Restrict)
+  updates          IssueRecord[]   @relation("Timeline")
+  ownerId          String
+  owner            User            @relation("IssueOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  assigneeId       String?
+  assignee         User?           @relation("IssueAssignee", fields: [assigneeId], references: [id], onDelete: Restrict)
+  currentVersion   Int
+  publishedVersion Int?
+  deletedAt        DateTime?       @db.Timestamptz(3)
+  createdAt        DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime        @updatedAt @db.Timestamptz(3)
+  revisions        IssueRevision[]
+  statements       Statement[]
+  briefingItems BriefingItem[]
+
+  @@index([parentId])
+  @@index([ownerId])
+  @@index([assigneeId])
+}
+
+enum StatementVersionStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  SUPERSEDED
+  REVOKED
+}
+
+model Statement {
+  id                  String            @id @default(cuid())
+  issueId             String
+  title               String
+  currentVersion      Int               @default(1)
+  approvedVersion     Int?
+  deletedAt           DateTime?         @db.Timestamptz(3)
+  createdAt           DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime          @updatedAt @db.Timestamptz(3)
+  issue               IssueRecord       @relation(fields: [issueId], references: [id], onDelete: Restrict)
+  author              User              @relation("StatementAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  authorId            String
+  versions            StatementVersion[]
+
+  @@index([issueId])
+}
+
+model StatementVersion {
+  statementId String
+  version     Int
+  title       String
+  body        String
+  status      StatementVersionStatus @default(DRAFT)
+  changeReason String?
+  validFrom   DateTime?              @db.Timestamptz(3)
+  validUntil  DateTime?              @db.Timestamptz(3)
+  revokedAt   DateTime?              @db.Timestamptz(3)
+  revokeReason String?
+  createdById String
+  approvedById String?
+  createdAt   DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime               @updatedAt @db.Timestamptz(3)
+  statement   Statement              @relation(fields: [statementId], references: [id], onDelete: Restrict)
+  createdBy   User                   @relation("StatementVersionAuthor", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@id([statementId, version])
+  @@index([status])
+}
+
+model IssueRevision {
+  recordId   String
+  record     IssueRecord @relation(fields: [recordId], references: [id], onDelete: Restrict)
+  version    Int
+  content    Json
+  searchText String
+  actorId    String
+  actor      User        @relation("IssueAuthor", fields: [actorId], references: [id], onDelete: Restrict)
+  createdAt  DateTime    @default(now()) @db.Timestamptz(3)
+
+  @@id([recordId, version])
+}
+
+enum BriefingStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+}
+
+enum BriefingSession {
+  PAGI
+  MALAM
+  INSIDENTIL
+}
+
+model Briefing {
+  id String @id @default(cuid())
+  date DateTime @db.Date
+  session BriefingSession
+  authorId String
+  author User @relation("BriefingAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  currentVersion Int @default(1)
+  publishedVersion Int?
+  revisions BriefingRevision[]
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([date, session])
+}
+
+model BriefingRevision {
+  briefingId String
+  version Int
+  status BriefingStatus @default(DRAFT)
+  title String
+  introduction String
+  followUp String
+  authorId String
+  author User @relation("BriefingRevisionAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  briefing Briefing @relation(fields: [briefingId], references: [id], onDelete: Restrict)
+  items BriefingItem[]
+  reviewComment String?
+  approvedById String?
+  approvedAt DateTime? @db.Timestamptz(3)
+  publishedAt DateTime? @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@id([briefingId, version])
+}
+
+model BriefingItem {
+  briefingId String
+  version Int
+  position Int
+  issueId String
+  title String
+  body String
+  references Json
+  priority IssuePriority @default(MEDIUM)
+  revision BriefingRevision @relation(fields: [briefingId, version], references: [briefingId, version], onDelete: Restrict)
+  issue IssueRecord @relation(fields: [issueId], references: [id], onDelete: Restrict)
+
+  @@id([briefingId, version, position])
 }

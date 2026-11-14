@@ -1,0 +1,6 @@
+import { currentUser } from "@/lib/auth";
+import { getBriefing, changeBriefing } from "@/lib/briefings";
+import { issueResponse } from "@/lib/issue-response";
+import { validOrigin } from "@/lib/security";
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) { const actor = await currentUser(); if (!actor) return Response.json({ error: "Silakan masuk." }, { status: 401 }); const briefing = await getBriefing(actor, (await context.params).id); return briefing ? Response.json(briefing, { headers: { "Cache-Control": "private, no-store" } }) : Response.json({ error: "Briefing tidak ditemukan." }, { status: 404 }); }
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) { if (!validOrigin(request)) return Response.json({ error: "Permintaan ditolak." }, { status: 403 }); const actor = await currentUser(); if (!actor) return Response.json({ error: "Silakan masuk." }, { status: 401 }); try { const body = await request.json(); if (!Number.isSafeInteger(body.version) || !["edit", "submit", "approve_publish"].includes(body.action)) return Response.json({ error: "Aksi tidak valid." }, { status: 400 }); return Response.json({ id: await changeBriefing(actor, (await context.params).id, body.version, body.action, body) }); } catch (error) { return issueResponse(error); } }

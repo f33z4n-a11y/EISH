@@ -173,3 +173,22 @@ Auth.js pada evaluasi awal adalah kandidat, bukan persyaratan produk wajib. Spri
 Prisma dipin ke 7.10.1 dengan adapter PostgreSQL setelah audit menemukan advisory pada dependensi Prisma 6. Semua timestamp server memakai timestamptz(3); migrasi tersimpan dan dapat diulang pada database baru. Image Node/PostgreSQL dipin digest. Pemilihan library tidak mengubah cakupan atau aturan persetujuan produk.
 
 Formulir Admin Sprint 0 hanya menyediakan akun Reader/Contributor/Editor. Katim/Approver dan Admin sintetis dibuat oleh seed lokal. Pengelolaan role, penonaktifan melalui UI, pemulihan password dan kebijakan provisioning privileged tetap memerlukan fase/keputusan terkait; tidak otomatis dianggap selesai karena fondasi session sudah ada.
+
+
+## Keputusan PO untuk Sprint 1 — 4 November 2026
+
+PO menyetujui usulan peninjauan Sprint 1, kemudian secara eksplisit meminta implementasi. Keputusan ini menggantikan batas Sprint 0 di bagian historis dokumen; tidak memberi izin Sprint 2–4 atau produksi.
+
+- Q-02: Contributor membaca/mengubah isu milik atau ditugaskan; Editor seluruh isu. Approver membaca internal dan membutuhkan peran operasional tambahan untuk edit. Admin tanpa peran tambahan hanya final.
+- Q-04: Editor menerbitkan revisi isu/update. Draft berikutnya tidak mengubah final; revisi dan sumber final disimpan terpisah.
+- Q-10: pencarian kata utuh judul/ringkasan/background/update sesuai izin; judul ternormalisasi serupa memberi peringatan nonblokir. Filter daftar memakai tanggal pertama dicatat; timeline memakai tanggal peristiwa. Pencarian parsial belum dijanjikan.
+- Q-12: upload lampiran ditunda atas persetujuan PO; sumber berupa judul dan tautan HTTP/HTTPS.
+- Q-13: Archived tetap terbaca sesuai izin; Editor dapat menarik publikasi atau soft delete. Reader kehilangan akses, histori internal dipertahankan; tidak ada hapus permanen.
+- Q-15: paragraf/tebal/miring/daftar/tautan aman; tanggal peristiwa terpisah waktu input; terbaru di atas; konflik edit ditolak tanpa membuang input.
+- Kategori awal sintetis melalui migrasi; pengelolaan kategori lengkap tetap Sprint 4.
+
+## Keputusan teknis Sprint 4 — 13 November 2026
+
+Checkpoint Reader disimpan per pengguna dan diperbarui ketika beranda dibuka. Ekspor membaca pointer snapshot briefing terbit dan menghasilkan PDF/DOCX tanpa mengambil sumber jaringan. Backup development memakai dump custom PostgreSQL, SHA-256, manifest jumlah record, serta restore ke database sementara berpola aman. Role Approver/Admin tidak diberikan lewat UI. Audit UI hanya untuk Admin dan tidak memiliki penghapusan otomatis selama development. Profil performa menggunakan database sintetis terisolasi sesuai volume yang disetujui PO.
+
+Rincian implementasi: format Markdown terbatas, dirender sebagai elemen React tanpa HTML mentah; sesi Pagi/Malam/Insidentil. Penarikan isu turut menarik update agar publikasi ulang tiap update eksplisit. Histori internal termasuk revisi update yang dihapus lunak; objek induk yang dihapus lunak tidak tampil pada UI biasa, tetapi seluruh record tetap tersimpan. Target aksesibilitas formal Q-17 masih terbuka; keyboard/mobile dasar tetap diuji, tanpa klaim kepatuhan menyeluruh.

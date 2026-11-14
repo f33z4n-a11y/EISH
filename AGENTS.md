@@ -3,7 +3,7 @@
 - Baca `docs/EISH_PRD_v1.0.md`, desain teknis, rencana implementasi dan keputusan PO sebelum mengubah aplikasi.
 - Bahasa UI dan dokumentasi adalah Bahasa Indonesia. Gunakan data sintetis saja; jangan menyimpan password/session/rahasia di Git, output perintah, tangkapan layar atau log.
 - Setiap tugas cloud sudah terisolasi. Gunakan checkout yang ada; jangan membuat worktree kecuali diminta pengguna.
-- Saat ini hanya Sprint 0 disetujui. Jangan membangun CRUD isu, approval, ekspor, portal final lengkap atau deployment produksi tanpa instruksi berikutnya.
+- Sprint 0 selesai; PO menyetujui aturan dan implementasi Sprint 1 (isu/timeline/publikasi/pencarian). Ikuti docs/SPRINT-1.md. Sprint 2–4, approval briefing/statement, ekspor, portal final lengkap dan produksi belum diotorisasi.
 - Katim ber-role Approver menyetujui satu tingkat dan boleh menyetujui karya sendiri. Admin/penulis biasa tidak otomatis Approver. Reader hanya menerima informasi final; draft tetap tersembunyi.
 - Login email/username + password; akun dibuat Admin, tanpa pendaftaran mandiri. Session idle 30 menit, absolut 8 jam; status/peran diperiksa di server.
 - Gunakan `npm ci`, `npm run db:generate`, `npm run db:migrate`, seed lokal, lalu lint/typecheck/build, unit/integrasi PostgreSQL dan E2E yang relevan. Jangan reset database yang berisi data pengguna.

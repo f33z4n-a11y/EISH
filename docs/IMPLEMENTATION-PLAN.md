@@ -142,3 +142,22 @@ Korpus sintetis minimal mencakup kelima peran, pengguna nonaktif, peran gabungan
 - Sprint 0: pengenal email dan username sama-sama menuju akun yang benar; kasus benturan dan normalisasi diuji. Password disetujui sebagai pembuktian identitas; pemulihan akun belum dicakup Sprint 0.
 - Sprint 2 dan 3: Katim yang juga penulis berhasil approve karya sendiri setelah melalui status sah; tidak ada kebutuhan approver kedua. Penulis tanpa role Approver ditolak. Audit mencatat penulis dan approver walaupun orang yang sama.
 - Sprint 1 dan 4: Reader dapat membaca semua informasi isu yang final, termasuk ringkasan, background, timeline dan sumber final sesuai akses; draft pada semua jalur tetap tidak tampil. Pengujian final-only dalam rencana kini dikonfirmasi PO; rincian penerbitan kolom isu masih dalam Q-04.
+
+
+## Keputusan PO untuk Sprint 1 — 4 November 2026
+
+PO menyetujui usulan peninjauan Sprint 1, kemudian secara eksplisit meminta implementasi. Keputusan ini menggantikan batas Sprint 0 di bagian historis dokumen; tidak memberi izin Sprint 2–4 atau produksi.
+
+- Q-02: Contributor membaca/mengubah isu milik atau ditugaskan; Editor seluruh isu. Approver membaca internal dan membutuhkan peran operasional tambahan untuk edit. Admin tanpa peran tambahan hanya final.
+- Q-04: Editor menerbitkan revisi isu/update. Draft berikutnya tidak mengubah final; revisi dan sumber final disimpan terpisah.
+- Q-10: pencarian kata utuh judul/ringkasan/background/update sesuai izin; judul ternormalisasi serupa memberi peringatan nonblokir. Filter daftar memakai tanggal pertama dicatat; timeline memakai tanggal peristiwa. Pencarian parsial belum dijanjikan.
+- Q-12: upload lampiran ditunda atas persetujuan PO; sumber berupa judul dan tautan HTTP/HTTPS.
+- Q-13: Archived tetap terbaca sesuai izin; Editor dapat menarik publikasi atau soft delete. Reader kehilangan akses, histori internal dipertahankan; tidak ada hapus permanen.
+- Q-15: paragraf/tebal/miring/daftar/tautan aman; tanggal peristiwa terpisah waktu input; terbaru di atas; konflik edit ditolak tanpa membuang input.
+- Kategori awal sintetis melalui migrasi; pengelolaan kategori lengkap tetap Sprint 4.
+
+## Keputusan pelaksanaan Sprint 4 — 13 November 2026
+
+PO menyetujui checkpoint “Apa yang Baru” saat beranda dibuka; empat peristiwa publikasi (isu baru, perubahan isu, perkembangan, briefing); ekspor final PDF dan DOCX; audit Admin tanpa penghapusan otomatis development; role privileged melalui operator; backup harian/30 hari/RPO 24 jam/RTO 8 jam oleh TI; arsip Reader dan histori soft-delete Admin/Editor; profil sintetis 10 pengguna/10 bersamaan/100 isu/20 update per isu/20 briefing/2.000 versi statement; serta migrasi sintetis saja. Implementasi lokal dan bukti otomatis tidak mengotorisasi produksi atau data nyata.
+
+Rincian implementasi: format Markdown terbatas, dirender sebagai elemen React tanpa HTML mentah; sesi Pagi/Malam/Insidentil. Penarikan isu turut menarik update agar publikasi ulang tiap update eksplisit. Histori internal termasuk revisi update yang dihapus lunak; objek induk yang dihapus lunak tidak tampil pada UI biasa, tetapi seluruh record tetap tersimpan. Target aksesibilitas formal Q-17 masih terbuka; keyboard/mobile dasar tetap diuji, tanpa klaim kepatuhan menyeluruh.

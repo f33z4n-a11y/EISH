@@ -23,7 +23,7 @@ beforeAll(async () => {
     actors.push({ id: user.id, roles: [role] });
   }
   [editor, approver, reader] = actors as [typeof editor, typeof approver, typeof reader];
-  issueId = await createIssue(editor, { ...defaultContent(editor.id), title: `Isu ${tag}`, categoryId: "layanan-publik", summary: "Ringkasan" }, undefined, false, undefined, true);
+  issueId = await createIssue(editor, { ...defaultContent(editor.id), title: `Isu ${tag}`, categoryId: "k09-komunikasi-publik", summary: "Ringkasan" }, undefined, false, undefined, true);
 });
 
 afterAll(async () => { await db.$disconnect(); });
@@ -45,7 +45,7 @@ describe("alur briefing ringkas", () => {
   });
   it("Apa yang Baru memakai kunjungan beranda sebagai checkpoint", async () => {
     await readWhatsNew(editor, new Date());
-    const freshId = await createIssue(editor, { ...defaultContent(editor.id), title: `Checkpoint ${randomUUID()}`, categoryId: "layanan-publik", summary: "Ringkasan baru" }, undefined, false, undefined, true);
+    const freshId = await createIssue(editor, { ...defaultContent(editor.id), title: `Checkpoint ${randomUUID()}`, categoryId: "k09-komunikasi-publik", summary: "Ringkasan baru" }, undefined, false, undefined, true);
     const second = await readWhatsNew(editor, new Date(Date.now() + 1000));
     expect(second.items.some((item) => item.href === `/issues/${freshId}`)).toBe(true);
     expect((await readWhatsNew(editor, new Date(Date.now() + 2000))).items).toHaveLength(0);

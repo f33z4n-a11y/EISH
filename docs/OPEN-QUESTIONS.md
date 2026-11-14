@@ -200,3 +200,29 @@ Tahap analisis selesai; PO mengizinkan implementasi Sprint 0 saja. Tidak ada kep
 | Diputuskan untuk Sprint 0 | Q-05 | Email/username + password, akun dibuat Admin, idle 30 menit dan absolut 8 jam | Pemulihan/SSO masih terbuka, bukan syarat tambahan fondasi lokal |
 
 Persetujuan teknis tidak menggantikan keputusan substantif PO atau persetujuan infrastruktur/keamanan TI. Jika sebagian desain disetujui, catat batas bagian yang disetujui; jangan menafsirkan itu sebagai izin membangun semua sprint.
+
+
+## Keputusan PO untuk Sprint 1 — 4 November 2026
+
+PO menyetujui usulan peninjauan Sprint 1, kemudian secara eksplisit meminta implementasi. Keputusan ini menggantikan batas Sprint 0 di bagian historis dokumen; tidak memberi izin Sprint 2–4 atau produksi.
+
+- Q-02: Contributor membaca/mengubah isu milik atau ditugaskan; Editor seluruh isu. Approver membaca internal dan membutuhkan peran operasional tambahan untuk edit. Admin tanpa peran tambahan hanya final.
+- Q-04: Editor menerbitkan revisi isu/update. Draft berikutnya tidak mengubah final; revisi dan sumber final disimpan terpisah.
+- Q-10: pencarian kata utuh judul/ringkasan/background/update sesuai izin; judul ternormalisasi serupa memberi peringatan nonblokir. Filter daftar memakai tanggal pertama dicatat; timeline memakai tanggal peristiwa. Pencarian parsial belum dijanjikan.
+- Q-12: upload lampiran ditunda atas persetujuan PO; sumber berupa judul dan tautan HTTP/HTTPS.
+- Q-13: Archived tetap terbaca sesuai izin; Editor dapat menarik publikasi atau soft delete. Reader kehilangan akses, histori internal dipertahankan; tidak ada hapus permanen.
+- Q-15: paragraf/tebal/miring/daftar/tautan aman; tanggal peristiwa terpisah waktu input; terbaru di atas; konflik edit ditolak tanpa membuang input.
+- Kategori awal sintetis melalui migrasi; pengelolaan kategori lengkap tetap Sprint 4.
+
+Rincian implementasi: format Markdown terbatas, dirender sebagai elemen React tanpa HTML mentah; sesi Pagi/Malam/Insidentil. Penarikan isu turut menarik update agar publikasi ulang tiap update eksplisit. Histori internal termasuk revisi update yang dihapus lunak; objek induk yang dihapus lunak tidak tampil pada UI biasa, tetapi seluruh record tetap tersimpan. Target aksesibilitas formal Q-17 masih terbuka; keyboard/mobile dasar tetap diuji, tanpa klaim kepatuhan menyeluruh.
+
+## Keputusan PO untuk Sprint 4 — 13 November 2026
+
+- Q-09: “Apa yang Baru” dihitung sejak terakhir pengguna membuka beranda; pembukaan beranda menandai informasi saat itu sudah dilihat. Peristiwa: isu baru terbit, perubahan isu terbit, perkembangan terbit, dan briefing terbit. Perubahan statement tidak dimasukkan.
+- Q-11: ekspor briefing final wajib PDF dan DOCX. Reader hanya dapat mengekspor snapshot terbit.
+- Q-02/Q-08: Admin UI hanya mengelola Reader, Contributor, dan Editor. Role Approver/Admin melalui operator/database. Audit hanya dibaca Admin dan tidak dihapus otomatis selama development.
+- Q-13: isu Archived tetap terlihat Reader. Histori soft-delete dibatasi Admin dan Editor.
+- Q-14: backup harian, retensi 30 hari, RPO 24 jam, RTO 8 jam, operator Tim TI. Latihan development memakai database sintetis terisolasi.
+- Q-16: profil sintetis 10 pengguna dan 10 bersamaan, 100 isu, 20 perkembangan per isu, 20 briefing, dan 2.000 versi statement; target maksimal 3 detik pada pilot, bukan SLA produksi.
+- Q-17: perangkat Chrome, Edge, Safari Mac, Safari iPhone, dan Chrome Android. Penerimaan awal meliputi keyboard, fokus, kontras, dan pembaca layar dasar tanpa klaim sertifikasi WCAG.
+- Migrasi hanya memakai data sintetis; data nyata tetap belum diizinkan.

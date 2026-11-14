@@ -1,0 +1,10 @@
+import "dotenv/config";
+import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { databaseConfig, counts, run } from "./db-tools";
+const config = databaseConfig(); if (process.env.NODE_ENV === "production") throw new Error("Gunakan prosedur TI untuk backup produksi.");
+const stamp = new Date().toISOString().replace(/[:.]/g, "-"); const directory = resolve("backups"); mkdirSync(directory, { recursive: true }); const file = resolve(directory, `eish-synthetic-${stamp}.dump`);
+run("pg_dump", ["--format=custom", "--no-owner", "--no-privileges", "--file", file], config);
+const sha256 = createHash("sha256").update(readFileSync(file)).digest("hex"); const manifest = { createdAt: new Date().toISOString(), database: config.database, sha256, counts: counts(config), syntheticOnly: true };
+writeFileSync(`${file}.manifest.json`, JSON.stringify(manifest, null, 2)); console.log(`Backup sintetis dibuat: ${file}`); console.log(`Manifest: ${file}.manifest.json`);

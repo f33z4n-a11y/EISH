@@ -1,3 +1,4 @@
+import { PasswordField } from "@/components/password-field";
 export const dynamic = "force-dynamic";
 export default async function Login({
   searchParams,
@@ -7,15 +8,10 @@ export default async function Login({
   const { gagal } = await searchParams;
   return (
     <main id="konten" className="login">
-      <a className="brand" href="/login">
-        EISH
+      <a className="brand-block" href="/login">
+        <span className="brand">SIGAP</span>
+        <span className="brand-subtitle">Sistem Intelijen dan Gerak Analisis Publik</span>
       </a>
-      <p className="eyebrow">Komunikasi publik · Ruang kerja internal</p>
-      <h1>
-        Informasi terarah.
-        <br />
-        Keputusan terjaga.
-      </h1>
       <p className="muted">
         Masuk untuk mengakses ruang kerja isu, briefing, dan pernyataan.
       </p>
@@ -38,14 +34,7 @@ export default async function Login({
             autoCapitalize="none"
           />
           <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            maxLength={72}
-          />
+          <PasswordField />
           <button type="submit" className="w-full">
             Masuk
           </button>

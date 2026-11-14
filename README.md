@@ -1,8 +1,8 @@
 # EISH — Pusat Isu dan Pernyataan
 
-Aplikasi internal komunikasi publik. Implementasi saat ini **Sprint 0**: login, session PostgreSQL, kebijakan peran, penyediaan akun dasar oleh Admin dan navigasi kosong berbahasa Indonesia. Modul isu, briefing, statement, pencarian serta ekspor belum diimplementasikan. Jangan gunakan data nyata atau menerapkan ke produksi.
+Aplikasi internal komunikasi publik. Implementasi lokal saat ini mencakup autentikasi, isu/timeline, Standby Statement, briefing, beranda informasi final, pencarian terpadu, dan administrasi dasar Sprint 4. Ekspor briefing, titik acuan “Apa yang Baru”, latihan backup/restore terisolasi, serta keputusan operasional pilot masih belum selesai. Jangan gunakan data nyata atau menerapkan ke produksi.
 
-Sumber kebutuhan: [PRD v1.0](docs/EISH_PRD_v1.0.md). Lihat [desain](docs/TECHNICAL-DESIGN.md), [rencana](docs/IMPLEMENTATION-PLAN.md), [keputusan](docs/OPEN-QUESTIONS.md), dan [laporan Sprint 0](docs/SPRINT-0.md).
+Sumber kebutuhan: [PRD v1.0](docs/EISH_PRD_v1.0.md). Lihat [desain](docs/TECHNICAL-DESIGN.md), [rencana](docs/IMPLEMENTATION-PLAN.md), [keputusan](docs/OPEN-QUESTIONS.md), serta laporan Sprint 0–4 di folder `docs`.
 
 ## Prasyarat
 
@@ -10,7 +10,7 @@ Node.js 24 (versi pengembangan tercatat di `.nvmrc`), npm, Docker dengan Compose
 
 ## Menjalankan lokal
 
-1. Salin `.env.example` menjadi `.env` dan isi nilai lokal. Buat `POSTGRES_PASSWORD` acak tanpa karakter URL khusus (misalnya hasil `openssl rand -hex 24`); samakan dengan password pada `DATABASE_URL`. Isi `AUTH_SECRET` acak minimal 32 karakter dan `SEED_PASSWORD` sintetis minimal 12 karakter (maksimal 72 byte UTF-8). Jangan menyalin nilai rahasia ke chat atau Git.
+1. Salin `.env.example` menjadi `.env` dan isi nilai lokal. Buat `POSTGRES_PASSWORD` acak tanpa karakter URL khusus (misalnya hasil `openssl rand -hex 24`); samakan dengan password pada `DATABASE_URL`. Isi `AUTH_SECRET` acak minimal 32 karakter dan `SEED_PASSWORD` sintetis minimal 12 karakter (maksimal 72 byte UTF-8, tidak diawali `GANTI`). Apit nilai rahasia dengan tanda kutip tunggal, terutama bila mengandung `#` atau `$`, agar tidak dipotong sebagai komentar/variabel. Nilai hex dari `openssl rand -hex 32` menghindari karakter khusus. Jangan menyalin nilai rahasia ke chat atau Git.
 2. Jalankan:
 
    ```bash
@@ -48,6 +48,7 @@ npm test
 npm run build
 npx playwright install chromium
 npm run test:e2e
+npm run test:performance
 ```
 
 `npm test` menjalankan unit dan integrasi PostgreSQL; kegagalan database membuat integrasi gagal, bukan dilewati. E2E menjalankan server dev secara otomatis bila belum ada. `SEED_PASSWORD` harus cocok dengan akun seed, dan APP_URL harus menggunakan port 3000 sesuai konfigurasi pengujian. Build produksi lokal dapat dijalankan dengan `npm run build` dan `npm start`; ini bukan penerapan produksi.
@@ -62,3 +63,45 @@ docker compose --profile aplikasi up -d app
 Migrasi tetap dijalankan dari host dengan `npm run db:migrate` sebelum memulai app. Image standalone berjalan sebagai user non-root dan tidak memuat `.env`. Hentikan server host pada port 3000 sebelum menjalankan app container. Compose BuildKit memasang CA publik sesi sebagai secret `proxy_ca`; di cloud memakai `CODEX_PROXY_CERT`, di luar cloud memakai CA sistem. Proxy bawaan tetap dipertahankan dan TLS tetap diverifikasi. Sesuaikan path CA sistem jika memakai OS non-Linux.
 
 `docker compose down` menghentikan layanan tanpa menghapus volume database. Jangan memakai `down -v` kecuali sengaja menghapus seluruh data dummy lokal. Backup/restore lengkap dijadwalkan Sprint 4.
+
+## Backup dan restore development
+
+Backup dan latihan restore hanya untuk database sintetis lokal. Dump custom PostgreSQL, manifest checksum, dan laporan disimpan di folder `backups/` yang diabaikan Git.
+
+```bash
+npm run db:backup
+npm run db:restore-test -- backups/eish-synthetic-<waktu>.dump
+```
+
+Restore membuat database sementara `eish_restore_test_<acak>`, memverifikasi checksum serta jumlah record, lalu menghapusnya. Skrip ini bukan prosedur produksi; Tim TI tetap bertanggung jawab atas jadwal harian, retensi 30 hari, RPO 24 jam, dan RTO 8 jam.
+
+
+## Menggunakan Sprint 1
+
+1. Contributor membuka Isu → Buat isu, memilih kategori awal, mengisi judul/ringkasan/tanggal, lalu menyimpan draft. ID tidak berubah saat judul diganti. Judul serupa memberi peringatan sebelum konfirmasi simpan.
+2. Tambah perkembangan dengan tanggal peristiwa, sesi, isi atau catatan tidak ada perkembangan material. Sumber jamak ditulis satu URL per baris; sistem menampilkannya sebagai referensi bernomor. Tidak ada pengambilan URL otomatis atau upload lampiran.
+3. Format teks terbatas: `**tebal**`, `*miring*`, baris `- daftar`, `[label](https://alamat)`. Gunakan tombol pratinjau. HTML, gambar dan protokol aktif ditolak.
+4. Editor menerbitkan isu, lalu tiap update yang sudah final. Reader hanya melihat revisi terbit; edit berikutnya tetap draft sampai diterbitkan lagi. Riwayat revisi internal dapat dibuka dari detail isu.
+5. Editor dapat mengganti pemilik/penugasan, menarik publikasi dan menghapus lunak. Penarikan isu juga menarik update; publikasi ulang tiap update harus eksplisit. Arsip (`Diarsipkan`) tetap terbaca sesuai izin; hapus lunak menyembunyikan objek, tanpa menghapus histori/database.
+6. Contributor mengelola milik/ditugaskan. Approver membaca draft internal, tetapi perlu role Contributor/Editor untuk mengedit. Admin tanpa role operasional hanya membaca final. Izin ditentukan kembali di server pada mutasi.
+7. Pencarian kata utuh meliputi judul/ringkasan/background/kata kunci/sumber dan isi perkembangan; filter kategori/status/pemilik/tanggal pertama dicatat. Maksimal 100 hasil; persempit pencarian bila diperlukan. Reader tidak mendapat judul/cuplikan/kata draft.
+8. Bila dua tab menyimpan versi yang sama, simpan kedua ditolak. Input tetap berada di formulir; buka versi terbaru di tab lain dan gabungkan secara manual. Tidak ada overwrite otomatis.
+
+### Memperbarui instalasi lokal yang sudah ada
+
+Setelah perubahan Sprint 1 tersedia pada branch yang Anda gunakan, hentikan server dengan Control+C. Pertahankan `.env` dan volume database, lalu jalankan dari folder EISH:
+
+```bash
+npm ci
+npm run db:generate
+docker compose up -d db --wait
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
+
+Seed tidak mereset akun/password lama. Jangan memakai `docker compose down -v` atau reset migrasi. Pada Mac, bila koneksi Node ke `localhost:5432` gagal tetapi PostgreSQL sehat, gunakan `127.0.0.1` pada `DATABASE_URL`; `APP_URL` tetap origin browser `http://localhost:3000`.
+
+Tes browser memakai akun sintetis tambahan dan menyimpan dokumen/histori uji untuk audit. Trace Playwright dimatikan agar input password/session tidak disimpan. Untuk menguji build lokal tanpa hot reload, hentikan dev server, jalankan `npm run build`, lalu `EISH_E2E_PRODUCTION=1 npm run test:e2e`. Ini bukan deployment produksi. Hindari menjalankan build/typecheck bersamaan dengan dev karena file tipe dihasilkan otomatis.
+
+Server development memakai `next dev --webpack` setelah pengujian menemukan loop hot reload Turbopack pada environment cloud ini. Build tetap memakai compiler bawaan Next.js.

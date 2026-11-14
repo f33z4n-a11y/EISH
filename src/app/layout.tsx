@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "EISH — Pusat Isu dan Pernyataan",
+  title: "SIGAP — Sistem Intelijen dan Gerak Analisis Publik",
   description: "Ruang kerja internal komunikasi publik",
 };
 export default function RootLayout({

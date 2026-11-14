@@ -15,7 +15,7 @@ describe("statement workflow dengan PostgreSQL", () => {
     const a = await db.user.create({ data: { name: `Statement Contributor ${tag}`, email: `sc-${tag}@example.test`, username: `sc-${tag}`, passwordHash: "synthetic", roles: { create: { role: "CONTRIBUTOR" } } } });
     const b = await db.user.create({ data: { name: `Statement Approver ${tag}`, email: `sa-${tag}@example.test`, username: `sa-${tag}`, passwordHash: "synthetic", roles: { create: { role: "APPROVER" } } } });
     contributor = { id: a.id, roles: ["CONTRIBUTOR"] }; approver = { id: b.id, roles: ["APPROVER"] };
-    issueId = await createIssue(contributor, { ...defaultContent(a.id), title: `Isu statement ${tag}`, categoryId: "layanan-publik", summary: "Sintetis" });
+    issueId = await createIssue(contributor, { ...defaultContent(a.id), title: `Isu statement ${tag}`, categoryId: "k09-komunikasi-publik", summary: "Sintetis" });
   });
   afterAll(async () => {
     if (statementId) { await db.statementVersion.deleteMany({ where: { statementId } }); await db.statement.delete({ where: { id: statementId } }); }
@@ -43,7 +43,7 @@ describe("statement workflow dengan PostgreSQL", () => {
   it("Contributor tidak menerima draft statement milik isu lain melalui daftar atau pencarian terpadu", async () => {
     const foreign = await db.user.create({ data: { name: `Contributor lain ${tag}`, email: `foreign-${tag}@example.test`, username: `foreign-${tag}`, passwordHash: "synthetic", roles: { create: { role: "CONTRIBUTOR" } } } });
     const foreignActor = { id: foreign.id, roles: ["CONTRIBUTOR" as const] };
-    const foreignIssue = await createIssue(foreignActor, { ...defaultContent(foreign.id), title: `Isu asing ${tag}`, categoryId: "layanan-publik", summary: "Sintetis" });
+    const foreignIssue = await createIssue(foreignActor, { ...defaultContent(foreign.id), title: `Isu asing ${tag}`, categoryId: "k09-komunikasi-publik", summary: "Sintetis" });
     const secret = `draft-rahasia-${tag}`;
     const foreignStatement = await createStatement(foreignActor, foreignIssue, { title: "Draft asing", body: secret });
     expect((await listStatements(contributor)).some((item) => item.id === foreignStatement)).toBe(false);

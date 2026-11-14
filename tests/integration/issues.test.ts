@@ -68,7 +68,7 @@ afterAll(async () => {
 const content = () => ({
   ...defaultContent(contributor.id),
   title: `Layanan ${tag}`,
-  categoryId: "layanan-publik",
+  categoryId: "k09-komunikasi-publik",
   summary: "Ringkasan final",
   background: "Latar belakang",
 });
@@ -255,7 +255,7 @@ describe("isu dan publikasi dengan PostgreSQL", () => {
     await mutateIssue(editor, archived, 1, "publish");
     const f = {
       q: `Arsip ${tag}`,
-      category: "layanan-publik",
+      category: "k09-komunikasi-publik",
       status: "ARCHIVED",
       owner: contributor.id,
       from: "2026-11-01",

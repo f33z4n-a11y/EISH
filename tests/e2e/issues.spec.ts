@@ -37,13 +37,13 @@ test("UAT-01/02: isu, timeline, final Reader, konflik dan pencarian aman", async
   }
   await login(page, "contributor");
   await page.goto("/issues");
-  await page.getByRole("link", { name: "Buat isu", exact: true }).click();
+  await page.getByRole("link", { name: /Buat isu/, exact: true }).click();
   await page
     .getByLabel("Judul isu", { exact: true })
     .fill(`Isu sintetis ${tag}`);
   await page
     .getByLabel("Kategori", { exact: true })
-    .selectOption("layanan-publik");
+    .selectOption("k09-komunikasi-publik");
   await page.getByLabel("Ringkasan manual").fill("Ringkasan awal **final**");
   await page
     .getByLabel("Latar belakang")

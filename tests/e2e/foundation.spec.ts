@@ -28,9 +28,10 @@ test("Reader login username, navigasi mobile, akses admin ditolak dan logout mem
   await page.setViewportSize({ width: 390, height: 844 });
   await login(page, "reader");
   await expect(page.getByRole("link", { name: "Administrasi" })).toHaveCount(0);
+  await page.locator("summary").filter({ hasText: "Menu" }).click();
   await page.getByRole("link", { name: "Isu", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Isu", exact: true }),
+    page.getByRole("heading", { name: "Daftar isu", exact: true }),
   ).toBeVisible();
   await page.goto("/admin");
   await expect(
@@ -45,6 +46,7 @@ test("Admin login email dan membuat akun; role Approver tidak tersedia di formul
   page,
 }) => {
   await login(page, "admin@example.test");
+  await page.locator("summary").filter({ hasText: "Menu" }).click();
   await page.getByRole("link", { name: "Administrasi" }).click();
   await expect(
     page.locator('select[name="role"] option[value="APPROVER"]'),
